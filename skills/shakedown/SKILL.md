@@ -21,9 +21,10 @@ Ask, and write the answer where noted:
 1. **Reset** - "What actually empties the environment for a pass?" A command, or explicitly *no reset is possible* (shared or staging environment) - which changes the shape of the pass, see §1. → `.shakedown/config.md`, `reset`.
 2. **Personas** - who uses this product, and for each: *"tell me their real job - typical volumes, how often they repeat this gesture, their vocabulary, their constraints."* One file per persona, `.shakedown/personas/<slug>.md`. **A brief you can't get a real answer for gets written as incomplete, not invented.** The controller (§4b) is only as sharp as this brief.
 3. **Topology** - does an account get structured in more than one way (multi-tenant, an organization/sub-entity hierarchy, more than one membership path)? If yes, list them; each gets covered separately. → `.shakedown/config.md`, `topology`.
-4. **Scope** - which document is authoritative on what's in and out of this pass, or *the whole product*. → `.shakedown/config.md`, `scope`.
-5. **Gate** - what has to pass before a push. Propose what's detectable (`package.json` scripts, CI config) and get it confirmed rather than assumed. → `.shakedown/config.md`, `gate`.
-6. **Registry** - where the living record lives and its ID-prefix convention (defaults in §6 if the project has no preference). → `.shakedown/config.md`, `registry`.
+4. **Breakpoints** - what viewport widths this product actually has to survive at: ask for real numbers (desktop / tablet / mobile, or however many the product targets - a desktop-only admin tool may need two, a consumer app might want more than three). Don't assume 1440/1024/390 without asking; a product with its own design system usually already has these numbers written down. → `.shakedown/config.md`, `breakpoints`.
+5. **Scope** - which document is authoritative on what's in and out of this pass, or *the whole product*. → `.shakedown/config.md`, `scope`.
+6. **Gate** - what has to pass before a push. Propose what's detectable (`package.json` scripts, CI config) and get it confirmed rather than assumed. → `.shakedown/config.md`, `gate`.
+7. **Registry** - where the living record lives and its ID-prefix convention (defaults in §6 if the project has no preference). → `.shakedown/config.md`, `registry`.
 
 On every later invocation, read `.shakedown/config.md` and `.shakedown/personas/*.md` and skip straight to the pass. **If a pass reaches a persona with no brief, or an incomplete one, stop and ask before letting the controller judge blind with it** - same refusal as asking for the incident before writing a check: skipping it produces a placeholder nobody comes back to.
 
@@ -118,6 +119,8 @@ The corollary for the whole pass: **a screen is validated by a gesture that land
 
 Grep for any expression that takes the **first element** of a list to decide an identity, a scope, or a permission: `[0]`, `.find(...)` with no discriminating criterion, `LIMIT 1` with no `ORDER BY`. The question to ask: *"and if there are two, which one is correct?"* If the answer isn't in the code, the code is choosing at random - and it'll choose differently in production, where rows don't arrive in the same order as in the pass.
 
+The same shape shows up disguised as client-side state: a value copied from a parent record (a name, a derived id, a label) and cached the first time it's available, never re-checked against whatever entity the current URL or context actually points at now. Same question, same test: switch to a second entity of the same kind and see whether the cached field follows it or stays stuck on the first one seen this session.
+
 ### c) Rules of the control
 
 1. **It validates nothing it hasn't seen** - a screenshot backing every verdict, in the exact state of the claim. A screen read from the DOM is not a screen seen.
@@ -127,9 +130,9 @@ Grep for any expression that takes the **first element** of a list to decide an 
 
 ### d) What passes between them
 
-The executor hands back: the intention played, the gestures exercised, screenshots across every breakpoint the screen touches, the entries it opened.
+The executor hands back: the intention played, the gestures exercised, screenshots at every breakpoint declared in `.shakedown/config.md` (§5a-bis) - never just the one convenient to capture - the entries it opened.
 
-The controller hands back: **one verdict per intention**, and every finding written **in the persona's first person** - "I just asked for my club and got nothing back" beats "no notification on approval" by an order of magnitude. That phrasing is what makes a defect impossible to argue with.
+The controller hands back: **one verdict per intention**, and every finding written **in the persona's first person** - "I just asked to join and got nothing back" beats "no notification on approval" by an order of magnitude. That phrasing is what makes a defect impossible to argue with.
 
 ### e) Model per role
 
@@ -149,7 +152,7 @@ Don't move to the next screen until the current one is **entirely** validated.
 
 **Forbidden**: fetching a URL directly to "check" a link, reading an `href` out of the DOM instead of clicking it, direct URL navigation to skip a flow. A link is proven by **clicking it** and observing the destination.
 
-**Default to accessibility-tree and locator-based interaction, not screenshots, for every gesture.** Click by role, label or test id; take a screenshot only at a verdict moment - the design-system audit (§5c), a breakpoint check, or a controller judgment. This is what keeps the pass's token cost bounded no matter how long it runs: navigation stays cheap, verdicts are the only expensive step, and that's exactly where a screenshot earns its cost.
+**Default to accessibility-tree and locator-based interaction, not screenshots, for every gesture.** Click by role, label or test id; take a screenshot only at a verdict moment - the design-system audit (§5c), a breakpoint check (§5a-bis), or a controller judgment. This is what keeps the pass's token cost bounded no matter how long it runs: navigation stays cheap, verdicts are the only expensive step, and that's exactly where a screenshot earns its cost.
 
 Known traps with a driven browser, worth knowing before opening a false defect:
 
@@ -160,6 +163,14 @@ Known traps with a driven browser, worth knowing before opening a false defect:
 
 Check every time: correct destination, **no console error**, no server-render error.
 
+### a-bis) Breakpoints - a loop, not an afterthought
+
+Every screen that renders anything visible (not a pure redirect or a background call) gets walked through **each width in `.shakedown/config.md`'s `breakpoints`, in sequence, every single time** - resize, re-observe, move to the next width. This is a separate, mandatory step, not something that happens only "if the screen looks responsive" or only once at the end of a screen series. Skipping it is the single easiest way to hand the controller a verdict that's only true at one width.
+
+At each width, hunt for what only breaks at a size, never at the one the screen happened to get built at: content that overflows and clips, an action that falls below a fold with no way to reach it, elements overlapping, a control that becomes unreachable. These are controller findings like any other (§4b), and get logged even if they don't reproduce at every width.
+
+Known trap: **a resize call can silently no-op on a tab that isn't the active/focused one**, in any browser driver that can hold more than one tab open. The next screenshot then quietly repeats the previous width under a new label, and the pass reports three viewports while having actually seen one. Never trust the resize call's own return value - after resizing, read the real viewport back (`window.innerWidth` / `window.innerHeight`) and confirm it matches the width just requested before capturing anything at that width.
+
 ### b) Forms - three passes, saved for real
 
 1. **Full** - every field filled.
@@ -167,6 +178,8 @@ Check every time: correct destination, **no console error**, no server-render er
 3. **A second time** - the same gesture, replayed on the row it just created (§2), whenever a `UNIQUE` is in play.
 
 Every pass goes all the way to an actual save, and the data gets verified afterward, not assumed from a success toast.
+
+When a field is documented to drive a business rule downstream rather than just being displayed back (a fee, a discount, an eligibility, a permission), verifying the field's own save is not enough - the pass isn't done until that downstream effect has actually been observed firing at least once, from data entered through this exact form.
 
 ### c) Design system - an audit axis, not just a writing rule
 
@@ -190,9 +203,11 @@ Every bug found gets fixed **immediately**. A non-blocking product call gets log
 
 **A fixed defect closes with a grep for its other carriers.** The same faulty pattern rarely lives in exactly one place. Grep the predicate, not the string.
 
+**Patching every carrier found is not the same as fixing the defect class.** When the bug is a decision an identity, a scope, or a permission gets made from (the `[0]` pattern and its variants, §4b) or a derived fact reimplemented locally (an `isXActive`/`isXReachable`-style predicate, a per-screen lookup standing in for a single keyed read), independently patching each site found by grep leaves the class alive for the next screen that reinvents it. The actual fix is extracting **one** canonical source and repointing every carrier at it. Before writing a new derived predicate or lookup at all, grep for its canonical twin first - a third independent implementation of the same derived fact is never a coincidence.
+
 **Every missing reciprocal is a defect**: `deactivate` with no `reactivate`, `promote` with no `transfer`, `create` with no `edit`.
 
-**No dead promises**: any text that sends a user somewhere else ("managed from your club," "complete your profile") has to lead to a screen that **exists**, where the action is actually **possible**.
+**No dead promises**: any text that sends a user somewhere else ("managed from your team," "complete your profile") has to lead to a screen that **exists**, where the action is actually **possible**.
 
 ---
 

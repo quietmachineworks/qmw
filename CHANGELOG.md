@@ -7,8 +7,29 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- Shakedown asks for a product's actual breakpoints during setup instead of
+  assuming desktop/tablet/mobile numbers, since a single-persona admin tool
+  may need only one width and a public product may need more than three.
+- Shakedown walks every declared breakpoint as its own step on every screen,
+  rather than as a detail folded into the screenshot handoff. A resize call
+  that silently no-ops on a backgrounded tab used to let three viewports read
+  as covered when only one had actually been seen.
+- The `[0]` pattern extends to client-side state: a parent record's name or
+  id, cached the moment it first becomes available, reads as fine right up
+  until a second entity of the same kind gets opened and the cached field
+  doesn't follow it.
+- A form whose field feeds a downstream rule (a fee, a discount, an
+  eligibility, a permission) is verified past the save, since a field can
+  persist correctly and still never be read by the rule it was built for.
+
 ### Changed
 
+- Fixing every carrier a grep turns up stops short of fixing the class: the
+  fix-in-flight guidance now asks for a canonical source repointed by every
+  carrier, and a grep for that canonical source before a new derived
+  predicate gets written at all.
 - This repository is now the `qmw` plugin, not the ratchet plugin. shakedown
   merged in from its own repository, and the two skills that were `/ratchet:audit`
   and `/ratchet:add` are `/qmw:ratchet-audit` and `/qmw:ratchet-add`. One

@@ -152,6 +152,8 @@ Don't move to the next screen until the current one is **entirely** validated.
 
 **Forbidden**: fetching a URL directly to "check" a link, reading an `href` out of the DOM instead of clicking it, direct URL navigation to skip a flow. A link is proven by **clicking it** and observing the destination.
 
+**Every link and every button on the screen gets exercised, not only the ones on the intention's direct path.** A control attached to something else (a link riding on a consent checkbox, a footer link, a link inside a tooltip or modal, a secondary button next to the primary action) doesn't get a pass just because the primary gesture succeeded - it still gets clicked on its own and its result observed, exactly like any other control. Completing the checkbox, form, or primary action it sits next to is not equivalent to exercising it.
+
 **Default to accessibility-tree and locator-based interaction, not screenshots, for every gesture.** Click by role, label or test id; take a screenshot only at a verdict moment - the design-system audit (§5c), a breakpoint check (§5a-bis), or a controller judgment. This is what keeps the pass's token cost bounded no matter how long it runs: navigation stays cheap, verdicts are the only expensive step, and that's exactly where a screenshot earns its cost.
 
 Known traps with a driven browser, worth knowing before opening a false defect:

@@ -1,7 +1,7 @@
 {
   "name": "qmw",
   "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, survey the whole codebase against the practices its own stack calls for, play a real user through its UI before real users do, and run every reported bug from incident to proven fix.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Bruno Bellenoue"
   },

@@ -9,6 +9,15 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- New skill: `survey`, a whole-codebase audit in the spirit of a marine
+  survey: the entire vessel or the perimeters you pick (front, back, mobile,
+  infra), walked under nine lenses - design, duplication and reinvention,
+  over-engineering, superseded patterns, dead weight, inconsistency, boundary
+  hygiene, performance shapes, test debt. Everything is judged against the
+  stack the project actually runs and the conventions it wrote down, never
+  the zeitgeist. Findings are classes with evidence and a priced fix
+  direction, capped so the structural ones survive the scroll. Reports and
+  prioritizes, fixes nothing, writes nothing.
 - New skill: `squawk`, one reported bug run from incident to proven fix. The
   report gets logged verbatim before anything else, reproduced in a real
   browser before any code changes, fixed at the class rather than the sites,

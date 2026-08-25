@@ -5,7 +5,7 @@
 ## English
 
 Small, opinionated tools for solo developers shipping real projects. One plugin,
-one install, four skills.
+one install, five skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -41,6 +41,25 @@ nothing. The middle pile is usually much larger than expected.
 
 Builds the check for one rule, freezes today's count as the baseline, and wires
 it into CI.
+
+### survey - the whole codebase, hull to rigging
+
+A survey is what a vessel gets before someone buys or insures it: the whole boat
+inspected, and a defect list ordered by what sinks her first. The surveyor
+repairs nothing; the owner decides what gets fixed and what they can live with.
+
+```
+/qmw:survey
+```
+
+Audits the entire codebase, or just the perimeters you pick (front, back,
+mobile, infra), under nine lenses: design, duplication and reinvention,
+over-engineering, superseded patterns, dead weight, inconsistency, boundary
+hygiene, performance shapes, test debt. Everything is judged against the stack
+the project actually runs, never against last month's release, and never
+against your own written conventions, which outrank generic best practice.
+Reports and prioritizes, fixes nothing, writes nothing: every repair is a
+follow-up you ask for after reading it.
 
 ### shakedown - play a real user before real users do
 
@@ -102,7 +121,7 @@ MIT, see [LICENSE](LICENSE).
 ## Français
 
 Des outils courts et assumés, pour les développeurs seuls qui livrent de vrais
-projets. Un plugin, une installation, quatre skills.
+projets. Un plugin, une installation, cinq skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -126,6 +145,23 @@ prévu.
 
 `/qmw:ratchet-add <la règle>` construit le contrôle, gèle le compte du jour comme
 référence, et le branche dans la CI.
+
+### survey - tout le code, de la coque au gréement
+
+Une expertise maritime, c'est ce que subit un bateau avant l'achat : le
+navire entier inspecté, et une liste de défauts triée par ce qui le coule en
+premier. L'expert ne répare rien ; le propriétaire décide ce qui se corrige et
+ce avec quoi il peut vivre.
+
+`/qmw:survey` audite la totalité du code, ou seulement les périmètres choisis
+(front, back, mobile, infra), sous neuf angles : conception, duplication et
+réinvention, sur-ingénierie, patterns dépassés, code mort, incohérences,
+hygiène des frontières, formes de performance, dette de tests. Tout est jugé
+contre la stack que le projet fait réellement tourner, jamais contre la
+release du mois dernier, et jamais contre tes propres conventions écrites, qui
+priment sur les bonnes pratiques génériques. Rapporte et priorise, ne corrige
+rien, n'écrit rien : chaque réparation est une suite que tu demandes après
+lecture.
 
 ### shakedown - jouer un vrai utilisateur avant les vrais utilisateurs
 

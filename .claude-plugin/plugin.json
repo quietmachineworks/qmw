@@ -1,6 +1,6 @@
 {
   "name": "qmw",
-  "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, survey the whole codebase against the practices its own stack calls for, play a real user through its UI before real users do, and run every reported bug from incident to proven fix.",
+  "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, survey the whole codebase against the practices its own stack calls for, repair what the survey found without changing how the product behaves, raise dependencies one proven step at a time, play a real user through its UI before real users do, run every reported bug from incident to proven fix, and run the release checklist for real before anything ships.",
   "version": "0.2.0",
   "author": {
     "name": "Bruno Bellenoue"
@@ -20,6 +20,10 @@
     "manual-testing",
     "bug-fix",
     "debugging",
-    "incident"
+    "incident",
+    "refactoring",
+    "dependencies",
+    "upgrade",
+    "release"
   ]
 }

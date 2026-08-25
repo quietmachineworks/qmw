@@ -21,6 +21,9 @@
     "qa",
     "user-acceptance",
     "e2e",
+    "refactoring",
+    "dependencies",
+    "release",
     "agent-skill",
     "claude-code"
   ],

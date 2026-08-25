@@ -7,6 +7,37 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- New skill: `refit`, the yard work that follows the survey. One finding at a
+  time - a block from a `/qmw:survey` report, or a defect class named
+  directly - re-verified against the tree, its carriers enumerated by
+  predicate, current behavior pinned before anything moves (the project's
+  gate, plus characterization tests where the touched code has none), the
+  class closed rather than the sites patched, and proof that nothing
+  observable changed: the pin replayed, the count re-measured to zero,
+  touched screens walked in a browser, a fresh-eyed sub-agent judging the
+  diff against the mandate alone. One intervention, one commit, one entry in
+  `.refit/log.md`. A bug discovered mid-repair is handed off, never silently
+  corrected inside a restructuring commit.
+- New skill: `drydock`, dependencies raised one proven step at a time. The
+  yard list built from every manifest the repository carries and priced;
+  advisories first, majors alone so a regression bisects to one name,
+  version-locked families moved together, minors batched under the gate.
+  Each raise is read before it happens - the real release notes, intersected
+  with actual usage in the code - and proven after: clean install, build,
+  gate. What cannot be raised cleanly is reverted and held with the price of
+  unblocking it in `.drydock/log.md`, and every commit left behind is a tree
+  where install, build and gate pass.
+- New skill: `seatrial`, the release checklist executed rather than read.
+  The current commit built from a clean clone, the artifact that would ship
+  opened and inspected both ways, migrations played forward from the last
+  released state rather than the dev database, changelog and version bump
+  judged against the actual diff since the last tag, the built product
+  smoked the way production starts it. Ends on a go or no-go bound to one
+  commit; any change to the tree voids the verdict and the trial runs again.
+  Fixes nothing, writes nothing.
+
 ## [0.2.0] - 2026-08-25
 
 ### Added

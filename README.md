@@ -5,7 +5,7 @@
 ## English
 
 Small, opinionated tools for solo developers shipping real projects. One plugin,
-one install, five skills.
+one install, eight skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -61,6 +61,47 @@ against your own written conventions, which outrank generic best practice.
 Reports and prioritizes, fixes nothing, writes nothing: every repair is a
 follow-up you ask for after reading it.
 
+### refit - one repair, nothing else moves
+
+The yard work that follows the survey. The surveyor hands over a defect list;
+the yard takes one item, does the work, and the boat leaves able to do
+everything she could do when she arrived. A repair that changes how she sails
+has failed, however clean the welds.
+
+```
+/qmw:refit <a finding from the survey, or a defect class named directly>
+```
+
+Re-verifies the finding against the tree as it stands, enumerates every carrier
+of the class, pins current behavior before anything moves (the project's gate,
+plus characterization tests where the touched code has none), then closes the
+class rather than patching the sites. Proof that nothing observable changed:
+the pin replayed, the finding's count re-measured to zero, touched screens
+walked in a browser, and a fresh-eyed sub-agent judging the diff against the
+mandate alone. One intervention, one commit, one entry in `.refit/log.md`. A
+bug discovered mid-repair is handed off, never silently corrected inside a
+restructuring commit.
+
+### drydock - dependencies raised one proven step at a time
+
+A dry dock works from a list, one item at a time, and never launches a boat
+mid-repair: at every point the vessel in the dock is one that could float. The
+usual alternative is one heroic upgrade-everything branch that dies unmerged.
+
+```
+/qmw:drydock
+```
+
+Builds the yard list from every manifest the repository carries, priced:
+advisories, majors, the minor-and-patch remainder. Advisories first, majors
+alone (one name, one raise, one commit, so a regression bisects to one name),
+version-locked families moved together, minors batched under the gate. Each
+raise is read before it happens - the real release notes, intersected with
+actual usage in the code - and proven after: clean install, build, gate. What
+cannot be raised cleanly is reverted and held, with the price of unblocking it
+written into `.drydock/log.md`, which is the next drydock's starting point.
+Every commit left behind is a tree where install, build and gate pass.
+
 ### shakedown - play a real user before real users do
 
 Test suites only ever exercise clean, fabricated worlds. The bugs that reach real
@@ -104,6 +145,26 @@ costs a second investigation.
 The reactive counterpart to shakedown, with the same standard of proof - and no
 dependency on it.
 
+### seatrial - the release checklist, executed
+
+Sea trials are the run a vessel makes before delivery: not one more inspection
+at the dock, the boat actually taken out and run. The dock paperwork says
+ready; the trial finds out.
+
+```
+/qmw:seatrial
+```
+
+The current commit built from a clean clone (the leg that catches the file that
+only exists locally and the dependency never declared), the artifact that would
+ship opened and inspected both ways, migrations played forward from the last
+released state rather than the dev database, changelog and version bump judged
+against the actual diff since the last tag, and the built product smoked the
+way production starts it, never the dev server. Ends on a go or no-go bound to
+one commit: any change to the tree voids the verdict and the trial runs again.
+Fixes nothing, writes nothing; every blocker is a follow-up you ask for after
+the verdict.
+
 ### Adding a skill here
 
 One repository, one plugin, one release. A new skill is a folder under `skills/`
@@ -121,7 +182,7 @@ MIT, see [LICENSE](LICENSE).
 ## Français
 
 Des outils courts et assumés, pour les développeurs seuls qui livrent de vrais
-projets. Un plugin, une installation, cinq skills.
+projets. Un plugin, une installation, huit skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -163,6 +224,43 @@ priment sur les bonnes pratiques génériques. Rapporte et priorise, ne corrige
 rien, n'écrit rien : chaque réparation est une suite que tu demandes après
 lecture.
 
+### refit - une réparation, rien d'autre ne bouge
+
+Le chantier qui suit l'expertise. L'expert remet une liste de défauts ; le
+chantier prend un poste à la fois, fait le travail, et le bateau repart capable
+de tout ce qu'il savait faire en arrivant. Une réparation qui change sa façon
+de naviguer a échoué, aussi propres que soient les soudures.
+
+`/qmw:refit <un constat du rapport, ou une classe de défaut nommée>` revérifie
+le constat contre l'arbre tel qu'il est, énumère tous les porteurs de la
+classe, épingle le comportement courant avant de bouger quoi que ce soit (le
+gate du projet, plus des tests de caractérisation là où le code touché n'en a
+pas), puis ferme la classe au lieu de rapiécer les occurrences. Preuve que rien
+d'observable n'a bougé : l'épingle rejouée, le compte du constat remesuré à
+zéro, les écrans touchés parcourus dans un navigateur, et un sous-agent au
+regard neuf qui juge le diff contre le seul mandat. Une intervention, un
+commit, une entrée dans `.refit/log.md`. Un bug découvert en cours de
+réparation est transmis, jamais corrigé en silence dans un commit de
+restructuration.
+
+### drydock - les dépendances montées un pas prouvé à la fois
+
+Une cale sèche travaille sur liste, un poste à la fois, et ne remet jamais à
+l'eau un bateau en cours de réparation : à tout instant, le navire dans la cale
+est un navire qui flotterait. L'alternative habituelle est une branche héroïque
+qui monte tout d'un coup et meurt sans être fusionnée.
+
+`/qmw:drydock` construit la liste de chantier depuis chaque manifeste du dépôt,
+chiffrée : advisories, majeures, le reste en mineures et patchs. Les advisories
+d'abord, les majeures seules (un nom, une montée, un commit, pour qu'une
+régression se bissecte vers un seul nom), les familles verrouillées entre elles
+montées ensemble, les mineures groupées sous le gate. Chaque montée est lue
+avant d'avoir lieu (les vraies release notes, croisées avec l'usage réel dans
+le code) et prouvée après : installation propre, build, gate. Ce qui ne monte
+pas proprement est annulé et tenu, avec le prix du déblocage écrit dans
+`.drydock/log.md`, point de départ de la prochaine cale sèche. Chaque commit
+laissé derrière est un arbre où installation, build et gate passent.
+
 ### shakedown - jouer un vrai utilisateur avant les vrais utilisateurs
 
 Une suite de tests n'exerce jamais qu'un monde propre et fabriqué. Les bugs qui
@@ -201,6 +299,23 @@ le même signalement ne coûte jamais une deuxième enquête.
 
 Le pendant réactif de shakedown, avec la même exigence de preuve, et aucune
 dépendance envers lui.
+
+### seatrial - la checklist de release, exécutée
+
+Les essais en mer sont la sortie qu'un navire fait avant livraison : pas une
+inspection de plus à quai, le bateau réellement sorti et poussé. Les papiers du
+quai disent prêt ; l'essai tranche.
+
+`/qmw:seatrial` construit le commit courant depuis un clone propre (le pas qui
+attrape le fichier qui n'existe qu'en local et la dépendance jamais déclarée),
+produit et ouvre l'artefact qui partirait, dans les deux sens ; joue les
+migrations depuis le dernier état livré plutôt que depuis la base de dev ; juge
+le changelog et le saut de version contre le vrai diff depuis le dernier tag ;
+et démarre le produit construit comme la production le démarre, jamais le
+serveur de dev. Se termine sur un go ou no-go lié à un seul commit : tout
+changement de l'arbre annule le verdict et l'essai repart du début. Ne corrige
+rien, n'écrit rien ; chaque blocage est une suite que tu demandes après le
+verdict.
 
 ### Ajouter une skill ici
 

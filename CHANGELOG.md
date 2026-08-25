@@ -9,6 +9,13 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- New skill: `squawk`, one reported bug run from incident to proven fix. The
+  report gets logged verbatim before anything else, reproduced in a real
+  browser before any code changes, fixed at the class rather than the sites,
+  then proven the way it was found: the reporter's path replayed from a clean
+  session, held to four axes (functional, visual, UX, UI at every declared
+  viewport) and signed off by fresh eyes that never saw the fix. Standalone:
+  it shares shakedown's standard of proof and none of its files.
 - Shakedown asks for a product's actual breakpoints during setup instead of
   assuming desktop/tablet/mobile numbers, since a single-persona admin tool
   may need only one width and a public product may need more than three.

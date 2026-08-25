@@ -5,7 +5,7 @@
 ## English
 
 Small, opinionated tools for solo developers shipping real projects. One plugin,
-one install, three skills.
+one install, four skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -63,6 +63,28 @@ Front-end products only, driven through a browser by accessibility tree and
 locators. The first run interviews you and writes the answers into `.shakedown/`
 at the project root, versioned like any other project decision.
 
+### squawk - one reported bug, from incident to proven fix
+
+A fix written from the bug's description alone fixes the description. And
+whoever just spent an hour on a fix is the worst-placed person alive to judge
+whether it worked.
+
+```
+/qmw:squawk a user says they paid and the invoice still shows unpaid
+```
+
+Logs the report verbatim with its screenshots, reproduces it in a real browser
+before touching any code, chases the cause past the guard that revealed it,
+fixes the class rather than the sites, then proves the fix the way the bug was
+found: the reporter's exact path replayed from a clean session, held to four
+axes - functional, visual, UX, UI at every declared viewport - and signed off by
+fresh eyes that never saw the fix. Every incident keeps its before/after
+captures, root cause and regression test in `.squawk/`, so the same report never
+costs a second investigation.
+
+The reactive counterpart to shakedown, with the same standard of proof - and no
+dependency on it.
+
 ### Adding a skill here
 
 One repository, one plugin, one release. A new skill is a folder under `skills/`
@@ -80,7 +102,7 @@ MIT, see [LICENSE](LICENSE).
 ## Français
 
 Des outils courts et assumés, pour les développeurs seuls qui livrent de vrais
-projets. Un plugin, une installation, trois skills.
+projets. Un plugin, une installation, quatre skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -124,6 +146,25 @@ Produits front uniquement, pilotés dans un navigateur par arbre d'accessibilit�
 et locators. La première exécution t'interroge et écrit les réponses dans
 `.shakedown/` à la racine du projet, versionné comme n'importe quelle décision de
 projet.
+
+### squawk - un bug signalé, de l'incident au fix prouvé
+
+Un fix écrit depuis la seule description du bug corrige la description. Et celui
+qui vient de passer une heure sur un fix est la personne la plus mal placée au
+monde pour juger s'il a marché.
+
+`/qmw:squawk <le signalement>` consigne le rapport mot pour mot avec ses
+captures, le reproduit dans un vrai navigateur avant de toucher au code, remonte
+à la cause au-delà de la garde qui l'a révélée, corrige la classe et pas
+seulement les occurrences, puis prouve le fix comme le bug a été trouvé : le
+chemin exact du rapporteur rejoué depuis une session vierge, tenu sur quatre
+axes (fonctionnel, visuel, UX, UI à chaque viewport déclaré) et validé par un
+regard neuf qui n'a jamais vu le fix. Chaque incident garde ses captures
+avant/après, sa cause racine et son test de régression dans `.squawk/`, pour que
+le même signalement ne coûte jamais une deuxième enquête.
+
+Le pendant réactif de shakedown, avec la même exigence de preuve, et aucune
+dépendance envers lui.
 
 ### Ajouter une skill ici
 

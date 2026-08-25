@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "qmw",
-      "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, and play a real user through its UI before real users do.",
+      "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, play a real user through its UI before real users do, and run every reported bug from incident to proven fix.",
       "category": "development",
       "source": "./",
       "homepage": "https://github.com/quietmachineworks/qmw"

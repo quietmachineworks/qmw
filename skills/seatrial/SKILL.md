@@ -1,6 +1,6 @@
 ---
 name: seatrial
-description: Run the release checklist for real before anything ships - the current commit built from a clean clone, the artifact that would ship opened and inspected, migrations played forward from the last released state, changelog and version judged against the actual diff since the last tag, the built product smoked the way production runs it. Ends on go or no-go bound to one commit, fixes nothing. Use when asked whether something is ready to release, to verify a release, or before a tag, publish, or deploy.
+description: Run the release checklist for real before anything ships, from a clean clone to the built product smoked the way production runs it. Ends on go or no-go bound to one commit, fixes nothing. Use when asked whether something is ready to release, to verify a release, or before a tag, publish, or deploy.
 license: MIT
 ---
 

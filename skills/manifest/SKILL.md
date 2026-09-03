@@ -1,6 +1,6 @@
 ---
 name: manifest
-description: Audit what is installed in the agent itself - skills, commands, subagents, hooks, MCP servers, plugins - against what each one costs on every prompt and what it has actually been used for; find what covers a need, both aboard and in the wider ecosystem, compared before anything is installed; and strike what earns nothing, one approved line at a time. Use when asked to audit, review or clean up skills, hooks, plugins, slash commands or agent configuration, when the setup feels bloated or slow, when a skill never seems to fire, or when looking for a skill that does something.
+description: Audit, price and clean what is installed in the agent itself: skills, commands, subagents, hooks, MCP servers, plugins. Use when asked to audit, review or clean up skills, hooks, plugins, slash commands or agent configuration, when the setup feels bloated or slow, when a skill never seems to fire, or when looking for a skill that does something.
 license: MIT
 ---
 
@@ -25,6 +25,8 @@ An agent accumulates the same way. A skill installed for one afternoon, a plugin
 Layouts differ by version, by OS and by install method, and a skill that remembers paths goes stale faster than the thing it audits. **Discover the inventory, never assume it.** Look where this build actually keeps things, and say in the report what was read.
 
 The kinds worth counting, wherever they live: **skills** (user-level, project-level, and the ones plugins bring), **slash commands**, **subagent definitions**, **hooks** (user settings, local settings, project settings, and the ones plugins install), **MCP servers**, and **plugins and their marketplaces**. Project-level items belong to the repository, not to the user; they are inventoried and priced, never struck by this skill.
+
+**Skills are often not installed by the agent at all.** A skill manager may own them, and then the agent's own folder holds only symlinks: the `skills` CLI keeps a lockfile at `~/.agents/.skill-lock.json`, plus a project-scoped equivalent, and links one source tree into every agent directory it was told to target. Find that lockfile before judging anything, because it carries what the folder cannot show - each item's upstream source, its path inside that repository, and a content hash. It also explains an inventory that makes no sense otherwise: one install told to target every agent creates a directory for every agent, including the dozens of tools this machine has never had, each holding a single link.
 
 Two things are read but never printed: **secrets and tokens**. MCP configs and hook environments carry API keys, and an audit that pastes them into a terminal, a report file or a subagent's context has leaked them. Report the name and the shape, never the value. A secret found in plain text in a config is itself a finding, and it outranks the audit.
 
@@ -72,7 +74,7 @@ Two halves, run in parallel, then compared on one set of axes.
 
 **Aboard.** What is already installed that covers the subject, wholly or partly. Partial coverage is the answer more often than not, and it must be stated as such: naming the eighty percent an installed skill already does is worth more than a link to a new one.
 
-**Afloat.** What the ecosystem offers: the marketplaces already registered on this machine first, then the open web. Name each candidate with its source, its author and the date it was last touched, because an unmaintained skill is a liability that reads like an asset.
+**Afloat.** What the ecosystem offers: the marketplaces already registered on this machine first, then whatever skill manager this machine already uses - `skills find <query>` searches the open registry without installing anything, and the lockfile names the upstreams already trusted here - then the open web. Name each candidate with its source, its author and the date it was last touched, because an unmaintained skill is a liability that reads like an asset.
 
 Compare candidates on four axes, always the same four:
 
@@ -90,6 +92,8 @@ Three verdicts, and the third is offered every time: **use what you already have
 The plan is read before anything moves, and the first thing it establishes is what can be undone.
 
 **Reversibility decides the action.** Something reinstallable in one command - a plugin, a marketplace skill - can be removed, and the report names the command that brings it back. Something that exists only on this machine - a hand-written skill, a local command, a hook script - is **archived, never deleted**: moved aside, out of the tree the agent reads, kept where the user can find it. The difference is not sentimental. A hand-written skill is unversioned work that no registry can restore.
+
+**Nothing is hand-written until the lockfiles say so.** Before putting an item in the unrecoverable class, look for the record that would restore it: a skill manager's lockfile, a package manifest, a plugin's install entry. An item carrying its own source and hash is reinstallable wherever it sits, and its removal belongs to the manager that owns it - `skills remove` over `rm` on a symlink, which strips the link and leaves the lockfile claiming an item that is gone. Guessing this wrong is expensive in one direction only: it prescribes archiving where one command would do, and prices removal far above what it costs.
 
 **Back up the config before touching it.** Copy the settings files that will change, and if the agent's home directory is not under version control, say so once: that is the cheapest fix in the whole report and it is not this skill's to make.
 

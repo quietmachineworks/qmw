@@ -1,6 +1,6 @@
 ---
 name: squawk
-description: Run one reported bug from incident to proven fix - log the report verbatim, reproduce it in a real browser before touching any code, fix the cause and its class rather than the symptom, then prove the fix through the UI on four axes (functional, visual, UX, UI). Use when a user reports a bug, a screenshot of a problem arrives, a production incident lands, or when asked to fix something and prove it rather than assume it.
+description: Run one reported bug from incident to proven fix, reproduced in a real browser before any code moves and proven through the UI afterwards. Use when a user reports a bug, a screenshot of a problem arrives, a production incident lands, or when asked to fix something and prove it rather than assume it.
 license: MIT
 ---
 
@@ -12,9 +12,15 @@ It is the reactive counterpart to a full QA pass: not a sweep of the product, on
 
 **Front end only.** The defect gets reproduced and proven in a driven browser (Playwright, a browser MCP, whatever driver is available), by accessibility tree and locators, never by curling endpoints. An API-only symptom still closes through the screen where a user meets it.
 
+## Where the fleet keeps its state
+
+Every path below written `.squawk/...` resolves under the fleet's shared root: `.qmw/squawk/...` at the repository top. One root is what lets the skills read each other - the gate another skill already established, the registry a past pass wrote, the log of what was repaired last month - instead of each one guessing at a sibling's private directory.
+
+A project set up before this convention keeps them at a bare `.squawk/`. **Read the legacy path when the shared root holds nothing**, work from what is there, and say once that moving it is a single `git mv`. Never write to both.
+
 ## Before the first squawk: setup
 
-If `.squawk/` does not exist in the project, ask before touching anything, and write the answers to `.squawk/config.md`:
+If neither root exists in the project, ask before touching anything, and write the answers to `.squawk/config.md`:
 
 1. **Launch** - how the product runs locally and at what URL a browser reaches it.
 2. **Access** - an account that is safe to click around in. If the only environment is production, say so in the config: reproduction steps that create or destroy data then get announced before being played, not after.

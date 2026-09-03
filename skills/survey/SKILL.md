@@ -1,6 +1,6 @@
 ---
 name: survey
-description: Audit an entire codebase, or one perimeter of it (front, back, mobile, infra), against the practices current for the stack it actually runs - design flaws, duplication and reinvention, over-engineering, superseded patterns, dead weight, inconsistency, boundary hygiene, performance shapes, test debt. Reports and prioritizes, fixes nothing, writes nothing. Use when asked for a code audit, a health check, a technical-debt review, or whether the code is over-engineered, duplicated or out of date.
+description: Audit an entire codebase, or one perimeter of it (front, back, mobile, infra), against the practices current for the stack it actually runs. Reports and prioritizes, fixes nothing, writes nothing. Use when asked for a code audit, a health check, a technical-debt review, or whether the code is over-engineered, duplicated or out of date.
 license: MIT
 ---
 
@@ -22,13 +22,15 @@ Full survey on a large repository runs one sub-agent per perimeter, each carryin
 
 ## The reference is the project, not the zeitgeist
 
-Three reads before judging anything, because they decide what counts as a finding:
+Four reads before judging anything, because they decide what counts as a finding:
 
 **The installed versions.** Manifests and lockfiles, per perimeter. "Outdated pattern" means superseded by something the version the project runs already provides, not by last month's release. A codebase on an old major using that major's idiom correctly has no currency findings; it has one upgrade finding, priced as an upgrade. Never recommend the idiom of a version the project does not have.
 
 **The stated conventions.** `CLAUDE.md`, `AGENTS.md`, `CONTRIBUTING.md`, style guides. The project's own written rules outrank generic best practice. A pattern the project chose deliberately and wrote down is not a finding, however much the ecosystem frowns; at most it is one line noting the trade-off, clearly separated from the defects.
 
 **The enforcement config.** Linters, formatters, type checkers, CI. What a check already enforces is not a finding, and neither is what it already reports: forty open warnings under a configured rule is one finding, "the check exists and the gate is open", not forty.
+
+**The fleet's own record.** `.qmw/refit/log.md` and `.qmw/drydock/log.md` where they exist, or their legacy `.refit/` and `.drydock/` paths. A class a refit already closed is not a finding. A dependency drydock recorded as held, with the price of unblocking it already sized, is one line citing that hold rather than a rediscovered currency finding. This skill writes nothing there - it reads so the report stops handing back work the yard has already done and priced.
 
 ## The nine lenses
 

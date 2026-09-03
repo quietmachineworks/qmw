@@ -7,6 +7,44 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Changed
+
+- The fleet keeps its state under one root. `shakedown`, `squawk`, `refit` and
+  `drydock` had each grown a private dot-directory at the repository top, five
+  siblings with no way for any skill to find what another left: `refit` was
+  reduced to hardcoding two of them to locate a gate someone else had already
+  established and confirmed. They now resolve under `.qmw/<skill>/`, and a
+  project set up before the convention has its bare `.squawk/` or
+  `.shakedown/` read as a fallback, so nothing already in the field breaks.
+  `.ratchet/` is untouched: it is a runner path with tests on it, not a log.
+- `survey` reads a fourth thing before judging anything: the fleet's own
+  record. A class `refit` already closed is not a finding, and a dependency
+  `drydock` recorded as held with the price of unblocking it already sized is
+  one line citing that hold rather than a rediscovered currency finding. It
+  still writes nothing there - it reads so the report stops handing back work
+  the yard has already done.
+- Descriptions cut by a quarter across the fleet, ~1,070 to ~810 tokens of
+  standing cost. Every one of them opened with an enumeration of what the
+  skill does internally, which never helps the model choose between skills
+  and is re-read on every prompt of every session. The triggers, which are
+  the half that does the choosing, are kept word for word.
+
+### Fixed
+
+- `manifest` no longer calls a managed skill set hand-written. It priced forty
+  skills as unversioned local work and prescribed archiving over removal, when
+  every one of them carried its upstream source, path and hash in a skill
+  manager's lockfile and was reinstallable in one command. It now looks for
+  that record before assigning the unrecoverable class, and reaches for the
+  owning manager's own removal instead of `rm` on a symlink, which strips the
+  link and leaves the lockfile claiming an item that is gone.
+- `manifest` knows that the agent's skill folder may hold nothing but links.
+  Its inventory now looks for a skill manager's lockfile, which is also the
+  only thing that explains a directory of agent folders for tools the machine
+  has never had: one install told to target every agent creates them all.
+  `find` searches that manager's registry alongside the registered
+  marketplaces, before reaching for the open web.
+
 ## [0.5.0] - 2026-09-03
 
 ### Added

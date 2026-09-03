@@ -12,9 +12,15 @@ It is not a UX review (opinions on what's good) and not a refactor pass (making 
 
 **Front end only.** This skill drives a browser, by accessibility tree and locators, not by curling endpoints. An API-only or CLI-only surface needs a different tool.
 
+## Where the fleet keeps its state
+
+Every path below written `.shakedown/...` resolves under the fleet's shared root: `.qmw/shakedown/...` at the repository top. One root is what lets the skills read each other - a gate established here is the gate `/qmw:refit` and `/qmw:squawk` find, and a registry left here is what a later pass resumes from - instead of each one guessing at a sibling's private directory.
+
+A project set up before this convention keeps them at a bare `.shakedown/`. **Read the legacy path when the shared root holds nothing**, work from what is there, and say once that moving it is a single `git mv`. Never write to both.
+
 ## Before the first pass: setup
 
-If `.shakedown/` does not exist in the project, this is a first run. Stop and interview before touching anything - the pass depends on these answers, and guessing them is worse than asking.
+If neither root exists in the project, this is a first run. Stop and interview before touching anything - the pass depends on these answers, and guessing them is worse than asking.
 
 Ask, and write the answer where noted:
 

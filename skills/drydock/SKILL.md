@@ -1,6 +1,6 @@
 ---
 name: drydock
-description: Raise a project's dependencies one proven step at a time - each raise read against its real release notes, checked against actual usage in the code, proven by the project's own gate, and committed alone so a later regression bisects to one name. What cannot be raised is held and priced, never pushed through. Use when asked to update or upgrade dependencies, handle a security advisory, resolve a version conflict, or lift a project that has drifted behind its ecosystem.
+description: Raise a project's dependencies one proven step at a time, each committed alone so a later regression bisects to one name. What cannot be raised is held and priced, never pushed through. Use when asked to update or upgrade dependencies, handle a security advisory, resolve a version conflict, or lift a project that has drifted behind its ecosystem.
 license: MIT
 ---
 
@@ -38,7 +38,9 @@ When the gate goes red: if the fix is the documented migration and it is mechani
 
 ## 5. The log
 
-`.drydock/log.md`, two sections, appended as work lands:
+`.qmw/drydock/log.md` at the repository top - the fleet's shared root, where every skill keeps its own subdirectory so each can read what the others left. A project set up before this convention keeps the log at a bare `.drydock/log.md`: append to whichever already exists, prefer the shared root for a first entry, and never write to both.
+
+Two sections, appended as work lands:
 
 - **Raised**: name, from → to, the breaking changes met and what was done about them, the commit. This is what makes the same read never happen twice.
 - **Held**: name, the version it is held at, what blocked the raise, and the price of unblocking it, sized honestly (a config rewrite, an API migration touching n files, an upstream fix to wait for). The held section is the next drydock's starting point, and a hold whose price is a refactor of the project's own code is a `/qmw:refit` mandate, written so it can be pasted.

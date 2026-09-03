@@ -1,6 +1,6 @@
 ---
 name: refit
-description: Execute one repair on a codebase - a survey finding, or a defect class named directly - with current behavior pinned before anything moves, the class closed rather than its sites patched, and proof that nothing observable changed. Use when the user picks findings from a /qmw:survey report, asks to pay down a named piece of technical debt, to refactor something safely, or to clean up a pattern without breaking anything.
+description: Execute one repair on a codebase with current behavior pinned before anything moves, and proof that nothing observable changed. Use when the user picks findings from a /qmw:survey report, asks to pay down a named piece of technical debt, to refactor something safely, or to clean up a pattern without breaking anything.
 license: MIT
 ---
 
@@ -22,7 +22,7 @@ State the mandate back in two lines before the first edit: what moves, and what 
 
 The safety net comes first, and it is measured, never assumed:
 
-- **Run the gate before the first edit** and keep the result. A refit started on a red gate can prove nothing, because every later failure is ambiguous. If the gate is already red, stop and say so; repairing the gate is its own mandate. The gate itself is read from `.shakedown/config.md` or `.squawk/config.md` when the project carries one, otherwise detected from the project's own scripts and CI and confirmed once.
+- **Run the gate before the first edit** and keep the result. A refit started on a red gate can prove nothing, because every later failure is ambiguous. If the gate is already red, stop and say so; repairing the gate is its own mandate. The gate itself is read from the fleet's shared root when the project carries one - any `.qmw/*/config.md`, or the legacy `.shakedown/config.md` and `.squawk/config.md` - otherwise detected from the project's own scripts and CI and confirmed once. A gate a sibling skill already established and had confirmed is not re-litigated here.
 - **Where the touched code has tests**, they are the pin, provided they test behavior. A suite of mock call-count assertions pins nothing: say so, and treat that code as uncovered.
 - **Where it has none, write characterization tests first**: tests that pin what the code does today, including behavior that looks accidental. They are written before the restructuring and never edited during it. A characterization test that has to change mid-refit is the refit changing behavior, caught in the act.
 
@@ -44,7 +44,9 @@ Characterization tests written for the pin get sorted at the end: the ones that 
 
 ## 5. Record and close
 
-`.refit/log.md`, one block per intervention, appended when the proof is in hand, never before:
+`.qmw/refit/log.md` at the repository top - the fleet's shared root, where every skill keeps its own subdirectory so each can read what the others left. A project set up before this convention keeps the log at a bare `.refit/log.md`: append to whichever already exists, prefer the shared root for a first entry, and never write to both.
+
+One block per intervention, appended when the proof is in hand, never before:
 
 ```
 RF-7  the pier-coupled gangway, from survey 2026-08-25

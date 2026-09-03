@@ -1,6 +1,6 @@
 {
   "name": "qmw",
-  "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, survey the whole codebase against the practices its own stack calls for, repair what the survey found without changing how the product behaves, raise dependencies one proven step at a time, play a real user through its UI before real users do, run every reported bug from incident to proven fix, and run the release checklist for real before anything ships.",
+  "description": "Small, opinionated tools for solo developers shipping real projects: freeze the code rules a project never enforced, survey the whole codebase against the practices its own stack calls for, repair what the survey found without changing how the product behaves, raise dependencies one proven step at a time, play a real user through its UI before real users do, run every reported bug from incident to proven fix, run the release checklist for real before anything ships, and audit what the agent itself carries - skills, hooks, plugins, MCP servers - against what each one costs on every prompt and what it has actually earned.",
   "version": "0.3.0",
   "author": {
     "name": "Bruno Bellenoue"
@@ -24,6 +24,11 @@
     "refactoring",
     "dependencies",
     "upgrade",
-    "release"
+    "release",
+    "agent-config",
+    "skills",
+    "hooks",
+    "plugins",
+    "context"
   ]
 }

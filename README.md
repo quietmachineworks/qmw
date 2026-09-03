@@ -5,7 +5,7 @@
 ## English
 
 Small, opinionated tools for solo developers shipping real projects. One plugin,
-one install, eight skills.
+one install, nine skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -165,6 +165,47 @@ one commit: any change to the tree voids the verdict and the trial runs again.
 Fixes nothing, writes nothing; every blocker is a follow-up you ask for after
 the verdict.
 
+### manifest - what the agent carries, and what it earns
+
+A ship's manifest declares everything aboard: what it is, what it weighs, and why
+it is taking up a berth. The other eight skills audit your code. This one audits
+the agent reading it.
+
+```
+/qmw:manifest
+```
+
+Inventories the skills, commands, subagents, hooks, MCP servers and plugins that
+are installed, and prices each one against what it actually did. Standing cost is
+paid on every prompt, whether a skill fires daily or never; a hook on `Bash` runs
+on every shell call with its timeout as the worst case. Usage comes from the
+session transcripts rather than the typed history, because the skills that work
+best are the ones nobody ever had to type. Every count carries the window it was
+measured over, and what could not be measured is never struck on silence.
+
+The finding nobody looks for is shadowing: two descriptions claiming the same
+trigger do not split the work, one wins and the other never fires, whatever its
+quality. That is why a good skill looks dormant.
+
+```
+/qmw:manifest find <subject>
+```
+
+What already covers the need, aboard first, then what the ecosystem offers -
+compared on fit, real cost (a plugin installed for one skill imports all of them,
+plus its hooks), and trust, since a skill is instructions your agent will follow.
+Recommends, never installs. The third verdict is offered every time: write the
+three lines yourself.
+
+```
+/qmw:manifest clean
+```
+
+The deprisation plan, one block per item, approved line by line. What a registry
+can reinstall gets removed with its restore command; what exists only on your
+machine gets archived, never deleted. Config is backed up before anything is
+touched, and silence is not approval.
+
 ### Adding a skill here
 
 One repository, one plugin, one release. A new skill is a folder under `skills/`
@@ -182,7 +223,7 @@ MIT, see [LICENSE](LICENSE).
 ## Français
 
 Des outils courts et assumés, pour les développeurs seuls qui livrent de vrais
-projets. Un plugin, une installation, huit skills.
+projets. Un plugin, une installation, neuf skills.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -316,6 +357,40 @@ serveur de dev. Se termine sur un go ou no-go lié à un seul commit : tout
 changement de l'arbre annule le verdict et l'essai repart du début. Ne corrige
 rien, n'écrit rien ; chaque blocage est une suite que tu demandes après le
 verdict.
+
+### manifest - ce que l'agent embarque, et ce que ça rapporte
+
+Le manifeste d'un navire déclare tout ce qui est à bord : ce que c'est, ce que ça
+pèse, et pourquoi ça occupe une place. Les huit autres skills auditent ton code.
+Celle-ci audite l'agent qui le lit.
+
+`/qmw:manifest` inventorie les skills, commandes, sous-agents, hooks, serveurs MCP
+et plugins installés, et facture chacun contre ce qu'il a réellement fait. Le coût
+permanent se paie à chaque prompt, qu'une skill se déclenche tous les jours ou
+jamais ; un hook sur `Bash` tourne à chaque appel shell, avec son timeout comme
+pire cas. L'usage se lit dans les transcripts de session plutôt que dans
+l'historique des commandes tapées, parce que les skills qui marchent le mieux sont
+celles que personne n'a jamais eu besoin de taper. Chaque compte porte la fenêtre
+sur laquelle il a été mesuré, et ce qui n'a pas pu être mesuré n'est jamais
+débarqué sur un silence.
+
+Le constat que personne ne cherche, c'est l'éclipse : deux descriptions qui
+revendiquent le même déclencheur ne se partagent pas le travail, l'une gagne et
+l'autre ne part jamais, quelle que soit sa qualité. C'est pour ça qu'une bonne
+skill a l'air dormante.
+
+`/qmw:manifest find <sujet>` cherche ce qui couvre déjà le besoin, à bord d'abord,
+puis ce que l'écosystème propose - comparés sur l'adéquation, le coût réel (un
+plugin installé pour une seule skill embarque toutes les autres, plus ses hooks)
+et la confiance, puisqu'une skill est un jeu d'instructions que ton agent va
+suivre. Recommande, n'installe jamais. Le troisième verdict est proposé à chaque
+fois : écris les trois lignes toi-même.
+
+`/qmw:manifest clean` produit le plan de débarquement, un bloc par élément, validé
+ligne par ligne. Ce qu'un registre peut réinstaller est supprimé avec sa commande
+de restauration ; ce qui n'existe que sur ta machine est archivé, jamais supprimé.
+La config est sauvegardée avant qu'on y touche, et un silence ne vaut pas un
+accord.
 
 ### Ajouter une skill ici
 

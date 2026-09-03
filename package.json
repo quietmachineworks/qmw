@@ -25,6 +25,9 @@
     "dependencies",
     "release",
     "agent-skill",
+    "agent-config",
+    "hooks",
+    "plugins",
     "claude-code"
   ],
   "bin": {

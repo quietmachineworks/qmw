@@ -7,6 +7,23 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- New skill: `manifest`, the audit turned on the agent rather than the code.
+  The installed skills, commands, subagents, hooks, MCP servers and plugins
+  inventoried from the config that is actually there, then priced on what
+  each costs whether or not it fires - standing cost paid on every prompt,
+  per-call cost paid on every matching tool call, per-session cost paid at
+  connection - against what the session transcripts show it earned, each
+  count carrying the window it was measured over. Reports shadowing, where
+  two descriptions claim the same trigger and the loser never fires and
+  looks dormant. `find` compares what is aboard against what the ecosystem
+  offers on fit, real cost and trust, and offers writing the three lines
+  yourself as a verdict; it installs nothing. `clean` strikes one approved
+  item at a time, removing only what a registry can restore and archiving
+  what exists nowhere else, config backed up first. Audit and find write
+  nothing; silence is never approval.
+
 ## [0.3.0] - 2026-08-25
 
 ### Added

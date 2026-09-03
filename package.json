@@ -35,6 +35,7 @@
   },
   "files": [
     "skills/",
+    "commands/",
     "examples/",
     ".claude-plugin/"
   ],

@@ -7,6 +7,15 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- New command: `/qmw:help`, the fleet and the moment each skill belongs to,
+  grouped by when you reach for it rather than alphabetically. A command and
+  not a skill on purpose: a skill pays its description on every prompt of
+  every session, and this one would spend that toll to repeat what the agent
+  already carries. CI now reads the map too, so a skill added without a line
+  there fails the build rather than going unmentioned.
+
 ## [0.4.0] - 2026-09-03
 
 ### Added

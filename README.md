@@ -18,6 +18,11 @@ Or with the skills CLI, for any agent that reads `SKILL.md`:
 npx skills add quietmachineworks/qmw
 ```
 
+Installed as a plugin, `/qmw:help` prints the fleet and the moment each skill
+belongs to. It is a command rather than a skill on purpose: a skill would pay its
+description on every prompt of every session to repeat what the agent already
+knows, which is exactly what `/qmw:manifest` is built to find.
+
 ### ratchet - make a rule enforce itself
 
 A rule written in `CLAUDE.md`, `AGENTS.md` or a style guide is an intention.
@@ -229,6 +234,11 @@ projets. Un plugin, une installation, neuf skills.
 /plugin marketplace add quietmachineworks/qmw
 /plugin install qmw@quietmachineworks
 ```
+
+Une fois le plugin installé, `/qmw:help` affiche la flotte et le moment auquel
+chaque skill appartient. C'est une commande et non une skill, délibérément : une
+skill paierait sa description à chaque prompt de chaque session pour répéter ce
+que l'agent sait déjà, ce que `/qmw:manifest` est justement fait pour débusquer.
 
 ### ratchet - qu'une règle s'applique d'elle-même
 

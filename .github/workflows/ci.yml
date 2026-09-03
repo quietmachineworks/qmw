@@ -64,21 +64,30 @@ jobs:
           done
       # Every skill is invoked as `/qmw:<folder>`. A README that spells one of
       # them differently sends a reader to a command that does not exist.
-      - name: README invokes the skills that exist
+      - name: README and the help command invoke the skills that exist
         run: |
           node -e "
             const fs = require('fs');
             const readme = fs.readFileSync('README.md','utf8');
+            // The help command is the map a newcomer types first. It drifts the
+            // day a skill is added and nobody opens it, so CI reads it too.
+            const help = fs.readFileSync('commands/help.md','utf8');
             const skills = fs.readdirSync('skills');
+            const commands = fs.readdirSync('commands').map(f => f.replace(/\.md\$/, ''));
             for (const s of skills) {
               if (!readme.includes('/qmw:' + s)) {
                 console.error(s + ': never invoked in README.md'); process.exit(1);
               }
-            }
-            for (const m of readme.matchAll(/\/qmw:([a-z0-9-]+)/g)) {
-              if (!skills.includes(m[1])) {
-                console.error('README invokes /qmw:' + m[1] + ', which is not a skill'); process.exit(1);
+              if (!help.includes('/qmw:' + s)) {
+                console.error(s + ': missing from commands/help.md'); process.exit(1);
               }
             }
-            console.log(skills.length + ' skills, all invoked and all real');
+            for (const [where, text] of [['README.md', readme], ['commands/help.md', help]]) {
+              for (const m of text.matchAll(/\/qmw:([a-z0-9-]+)/g)) {
+                if (!skills.includes(m[1]) && !commands.includes(m[1])) {
+                  console.error(where + ' invokes /qmw:' + m[1] + ', which does not exist'); process.exit(1);
+                }
+              }
+            }
+            console.log(skills.length + ' skills and ' + commands.length + ' commands, all invoked and all real');
           "

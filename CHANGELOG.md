@@ -7,6 +7,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-09-03
+
 ### Changed
 
 - The fleet keeps its state under one root. `shakedown`, `squawk`, `refit` and

@@ -19,7 +19,7 @@ jobs:
           - os: windows-latest
             node: 24
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
@@ -28,7 +28,7 @@ jobs:
   repo:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # The commit-surface ratchet judges the range this run introduces.
           fetch-depth: 0

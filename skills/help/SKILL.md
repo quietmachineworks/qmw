@@ -1,5 +1,8 @@
 ---
+name: help
 description: The qmw skills - what each does, and when to reach for it
+disable-model-invocation: true
+license: MIT
 ---
 
 Print the map below, in the language of the conversation, and nothing else: no
@@ -37,6 +40,9 @@ when the agent itself is the problem
 
 the whole cycle at once
   /qmw:full-cycle       audit-codebase, refactor, upgrade-deps, run-qa, check-release - one guided passage
+
+this map
+  /qmw:help             the skills and the moment each one belongs to
 ```
 
 Then close with these two lines, translated the same way:

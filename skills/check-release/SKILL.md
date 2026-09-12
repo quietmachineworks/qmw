@@ -1,6 +1,7 @@
 ---
 name: check-release
 description: Run the release checklist for real before anything ships, from a clean clone to the built product smoked the way production runs it. Ends on go or no-go bound to one commit, fixes nothing. Use when asked whether something is ready to release, to verify a release, or before a tag, publish, or deploy.
+disallowed-tools: Write, Edit, NotebookEdit
 license: MIT
 ---
 

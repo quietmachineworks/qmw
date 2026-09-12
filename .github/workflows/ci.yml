@@ -25,69 +25,35 @@ jobs:
           node-version: ${{ matrix.node }}
       - run: node test/run.mjs
 
-  manifests:
+  repo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The commit-surface ratchet judges the range this run introduces.
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
       # This repository is both the plugin and the marketplace that indexes it.
-      # A syntax error or a missing field fails at someone else's `/plugin
-      # marketplace add`, on their machine, with no signal here.
-      - name: Manifests parse, agree, and carry what the browser shows
+      # A syntax error, a missing field, or a stale name fails at someone else's
+      # `/plugin marketplace add`, on their machine, with no signal here.
+      - name: Manifests, versions, skills, links and examples agree
+        run: node test/repo.mjs
+      # `validate .` reads the marketplace manifest only; the plugin manifest
+      # and the skills are validated by naming them.
+      - name: Plugin manifests and skills validate under the runtime's own rules
         run: |
-          node -e "
-            const fs = require('fs');
-            const p = JSON.parse(fs.readFileSync('.claude-plugin/plugin.json','utf8'));
-            const m = JSON.parse(fs.readFileSync('.claude-plugin/marketplace.json','utf8'));
-            JSON.parse(fs.readFileSync('package.json','utf8'));
-            for (const entry of m.plugins) {
-              for (const field of ['name','description','category','source','homepage']) {
-                if (!entry[field]) { console.error(entry.name + ': missing ' + field); process.exit(1); }
-              }
-            }
-            // The index points at this repository, so the two names are one name.
-            const names = m.plugins.map(e => e.name);
-            if (names.length !== 1 || names[0] !== p.name) {
-              console.error('index lists ' + JSON.stringify(names) + ', plugin is ' + p.name);
-              process.exit(1);
-            }
-            console.log('manifests agree on ' + p.name);
-          "
-      # A skill whose folder name and frontmatter name disagree installs under
-      # one name and is invoked under another.
-      - name: Skills declare a matching name and a description
+          npx --yes @anthropic-ai/claude-code@latest plugin validate --strict .
+          npx --yes @anthropic-ai/claude-code@latest plugin validate --strict .claude-plugin/plugin.json
+          npx --yes @anthropic-ai/claude-code@latest plugin validate --strict skills
+      - name: Ratchet, house style
+        run: node .ratchet/ratchet.mjs house-style
+      - name: Gate, commit message norms
         run: |
-          for skill in skills/*/SKILL.md; do
-            dir=$(basename "$(dirname "$skill")")
-            head -1 "$skill" | grep -qx -- '---'
-            grep -qxE "name: $dir" "$skill" || { echo "$skill: name does not match $dir"; exit 1; }
-            grep -qE '^description: ' "$skill" || { echo "$skill: no description"; exit 1; }
-          done
-      # Every skill is invoked as `/qmw:<folder>`. A README that spells one of
-      # them differently sends a reader to a command that does not exist.
-      - name: README and the help command invoke the skills that exist
-        run: |
-          node -e "
-            const fs = require('fs');
-            const readme = fs.readFileSync('README.md','utf8');
-            // The help command is the map a newcomer types first. It drifts the
-            // day a skill is added and nobody opens it, so CI reads it too.
-            const help = fs.readFileSync('commands/help.md','utf8');
-            const skills = fs.readdirSync('skills');
-            const commands = fs.readdirSync('commands').map(f => f.replace(/\.md\$/, ''));
-            for (const s of skills) {
-              if (!readme.includes('/qmw:' + s)) {
-                console.error(s + ': never invoked in README.md'); process.exit(1);
-              }
-              if (!help.includes('/qmw:' + s)) {
-                console.error(s + ': missing from commands/help.md'); process.exit(1);
-              }
-            }
-            for (const [where, text] of [['README.md', readme], ['commands/help.md', help]]) {
-              for (const m of text.matchAll(/\/qmw:([a-z0-9-]+)/g)) {
-                if (!skills.includes(m[1]) && !commands.includes(m[1])) {
-                  console.error(where + ' invokes /qmw:' + m[1] + ', which does not exist'); process.exit(1);
-                }
-              }
-            }
-            console.log(skills.length + ' skills and ' + commands.length + ' commands, all invoked and all real');
-          "
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ]; then
+            echo "no base commit for this event, judging HEAD only"
+            base="HEAD~1"
+          fi
+          node .ratchet/ratchet.mjs house-style --commits "$base..HEAD"

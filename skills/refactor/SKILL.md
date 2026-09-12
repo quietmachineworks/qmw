@@ -1,6 +1,7 @@
 ---
 name: refactor
 description: Execute one repair on a codebase with current behavior pinned before anything moves, and proof that nothing observable changed. Use when the user picks findings from a /qmw:audit-codebase report, asks to pay down a named piece of technical debt, to refactor something safely, or to clean up a pattern without breaking anything.
+argument-hint: "[a finding from the audit, or a defect class named directly]"
 license: MIT
 ---
 

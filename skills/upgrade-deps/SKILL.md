@@ -1,6 +1,7 @@
 ---
 name: upgrade-deps
 description: Raise a project's dependencies one proven step at a time, each committed alone so a later regression bisects to one name. What cannot be raised is held and priced, never pushed through. Use when asked to update or upgrade dependencies, handle a security advisory, resolve a version conflict, or lift a project that has drifted behind its ecosystem.
+disable-model-invocation: true
 license: MIT
 ---
 

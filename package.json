@@ -35,7 +35,6 @@
   },
   "files": [
     "skills/",
-    "commands/",
     "examples/",
     ".claude-plugin/"
   ],
@@ -43,6 +42,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node test/run.mjs"
+    "test": "node test/run.mjs",
+    "check": "node test/repo.mjs && node .ratchet/ratchet.mjs house-style"
   }
 }

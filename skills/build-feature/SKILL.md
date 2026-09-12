@@ -1,6 +1,8 @@
 ---
 name: build-feature
-description: Build one intended change and prove it lands the way a bug fix is proven - the intention played until it actually works, a regression test at the level the behavior lives, fresh eyes on the diff - with the surrounding behavior held. The forward twin of refactor: refactor proves nothing changed, this proves the one intended thing changed and nothing else did. Use when a change should be shown to work and shown not to break the rest, one intention per run, not for routine edits the base tools already handle.
+description: Build one intended change and prove it lands - the intention played through until it works, a regression test at the level the behavior lives, fresh eyes on the diff - with the surrounding behavior pinned and held. The forward twin of refactor. Use for a change worth proving, one intention per run, not for routine edits.
+argument-hint: "[what must land, in the words of whoever will use it]"
+disable-model-invocation: true
 license: MIT
 ---
 

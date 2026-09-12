@@ -23,9 +23,8 @@ It is two files with no dependencies, and vendoring them means the check keeps
 working when the skill is uninstalled, when CI runs without network, and when
 someone clones the repository years later.
 
-The alternative, `npm i -D @quietmachineworks/qmw` and calling
-`node_modules/.bin/ratchet`, works too and buys version pinning at the cost of
-a dependency.
+There is no package to depend on instead. The runner is two files and it is
+meant to be read, so the copy in your tree is the version you run.
 
 ## Check where the workflow runs before adding to it
 

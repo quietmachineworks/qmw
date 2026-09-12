@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The release notes are the changelog section for this tag, nothing
+      # else: one place states what shipped, and the tag, the manifest and the
+      # notes cannot disagree on it.
+      - name: Read the changelog section for this tag
+        id: notes
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          for file in package.json .claude-plugin/plugin.json; do
+            declared=$(node -p "require('./$file').version")
+            if [ "$declared" != "$version" ]; then
+              echo "$file says $declared, tag says $version"; exit 1
+            fi
+          done
+          awk -v v="$version" '
+            $0 ~ "^## \\[" v "\\]" { on = 1; next }
+            on && /^## \[/ { exit }
+            on { print }
+          ' CHANGELOG.md > notes.md
+          if [ ! -s notes.md ]; then echo "CHANGELOG.md has no section for $version"; exit 1; fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Create the GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --title "${{ steps.notes.outputs.version }}" --notes-file notes.md

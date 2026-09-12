@@ -5,7 +5,7 @@
 ## English
 
 Small, opinionated tools for solo developers shipping real projects. One plugin,
-one install, eleven skills.
+one install, eleven skills, plus a help map and a full-cycle passage.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -19,9 +19,16 @@ npx skills add quietmachineworks/qmw
 ```
 
 Installed as a plugin, `/qmw:help` prints the skills and the moment each one
-belongs to. It is a command rather than a skill on purpose: a skill would pay its
-description on every prompt of every session to repeat what the agent already
-knows, which is exactly what `/qmw:audit-agent` is built to find.
+belongs to. It and `/qmw:full-cycle` are invoked by hand only, never picked by
+the agent on its own. Every skill still pays its description on every prompt of
+every session, whether it fires or not; that price is what `/qmw:audit-agent` is
+built to measure, on this plugin as much as on any other.
+
+The skills that audit (`audit-rules`, `audit-codebase`, `check-release`,
+`status`) have the write and edit tools removed from their pool for the turn,
+so "writes nothing" is held by the harness and not only by the text. The
+skills that change a tree and drive a browser (`run-qa`, `fix-bug`,
+`upgrade-deps`, `build-feature`) run only when you type them.
 
 How the pieces fit together - the two disciplines, the order the skills feed each
 other in, the shared state root, the three roles they delegate into - is
@@ -251,7 +258,7 @@ living registry in `.qmw/run-qa/`.
 ```
 
 Reads those records and reports where the work stands: the bugs still open, the
-refits landed and the next one they named, the dependencies held with the price
+changes landed and the next one they named, the dependencies held with the price
 of unblocking each, the last release verdict. Details what needs a decision,
 lists the rest, and closes on the record's own next step handed back as an
 invocation. Reads the records, never re-runs the skills; writes nothing.
@@ -270,16 +277,18 @@ Audit-codebase, then a refactor for each finding you pick, upgrade-deps, a
 run-qa, and a check-release that ends on a go or no-go for the tag. It
 orchestrates and gates; it
 does not do the work itself, and it never skips the gate between legs, where
-silence is not approval. A command rather than a skill, the same reason
-`/qmw:help` is.
+silence is not approval. Invoked by hand only, like `/qmw:help`: an
+orchestrator has nothing to say until you type it.
 
 ### Adding a skill here
 
 One repository, one plugin, one release. A new skill is a folder under `skills/`
 whose name is what people will type after `/qmw:`, a `SKILL.md` whose frontmatter
-`name` matches that folder, and a mention in this README. CI enforces all three:
-a skill nobody can invoke, or a README that invokes one that does not exist,
-fails the build rather than a stranger's install.
+`name` matches that folder, a mention in this README and in the `/qmw:help` map,
+and a line under Unreleased in the changelog. A skill that audits declares
+`disallowed-tools: Write, Edit, NotebookEdit`. `node test/repo.mjs` checks all
+of it, and CI runs it: a skill nobody can invoke, or a README that invokes one
+that does not exist, fails the build rather than a stranger's install.
 
 ### License
 
@@ -290,7 +299,8 @@ MIT, see [LICENSE](LICENSE).
 ## Français
 
 Des outils courts et assumés, pour les développeurs seuls qui livrent de vrais
-projets. Un plugin, une installation, onze skills.
+projets. Un plugin, une installation, onze skills, plus une carte d'aide et un
+cycle complet.
 
 ```
 /plugin marketplace add quietmachineworks/qmw
@@ -298,9 +308,17 @@ projets. Un plugin, une installation, onze skills.
 ```
 
 Une fois le plugin installé, `/qmw:help` affiche les skills et le moment auquel
-chaque skill appartient. C'est une commande et non une skill, délibérément : une
-skill paierait sa description à chaque prompt de chaque session pour répéter ce
-que l'agent sait déjà, ce que `/qmw:audit-agent` est justement fait pour débusquer.
+chaque skill appartient. `/qmw:help` et `/qmw:full-cycle` ne se lancent qu'à la
+main, jamais choisis par l'agent tout seul. Chaque skill paie quand même sa
+description à chaque prompt de chaque session, qu'elle se déclenche ou non ; ce
+prix est exactement ce que `/qmw:audit-agent` est fait pour mesurer, sur ce
+plugin comme sur n'importe quel autre.
+
+Les skills qui auditent (`audit-rules`, `audit-codebase`, `check-release`,
+`status`) se voient retirer les outils d'écriture et d'édition pour le tour, si
+bien que « n'écrit rien » tient par le harnais et pas seulement par le texte.
+Les skills qui modifient l'arbre et pilotent un navigateur (`run-qa`,
+`fix-bug`, `upgrade-deps`, `build-feature`) ne tournent que quand tu les tapes.
 
 Comment les pièces s'emboîtent (les deux disciplines, l'ordre dans lequel les
 skills se passent le travail, la racine d'état partagée, les trois rôles), c'est
@@ -514,17 +532,20 @@ bon outil ; pour tout d'un coup, celle-ci déroule le cycle dans l'ordre.
 retiens, upgrade-deps, un run-qa, et un check-release qui se termine sur un go ou
 no-go pour le tag. Orchestre et met des portes ; ne fait pas le travail lui-même,
 et ne
-saute jamais la porte entre deux étapes, où un silence ne vaut pas un accord. Une
-commande et non une skill, pour la même raison que `/qmw:help`.
+saute jamais la porte entre deux étapes, où un silence ne vaut pas un accord. Ne
+se lance qu'à la main, comme `/qmw:help` : un orchestrateur n'a rien à dire
+tant que tu ne l'as pas tapé.
 
 ### Ajouter une skill ici
 
 Un dépôt, un plugin, une release. Une nouvelle skill est un dossier sous
 `skills/` dont le nom est ce que les gens taperont après `/qmw:`, un `SKILL.md`
-dont le `name` du frontmatter correspond à ce dossier, et une mention dans ce
-README. La CI vérifie les trois : une skill que personne ne peut invoquer, ou un
-README qui invoque une skill inexistante, casse le build plutôt que
-l'installation d'un inconnu.
+dont le `name` du frontmatter correspond à ce dossier, une mention dans ce
+README et dans la carte `/qmw:help`, et une ligne sous Unreleased dans le
+changelog. Une skill qui audite déclare `disallowed-tools: Write, Edit,
+NotebookEdit`. `node test/repo.mjs` vérifie tout cela, et la CI le lance : une
+skill que personne ne peut invoquer, ou un README qui invoque une skill
+inexistante, casse le build plutôt que l'installation d'un inconnu.
 
 ### Licence
 

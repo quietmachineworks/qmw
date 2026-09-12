@@ -1,6 +1,7 @@
 ---
 name: status
 description: Read qmw's own records under .qmw/ and report where the work stands - open bugs, changes landed, dependencies held with the price of unblocking them, the last release verdict. Writes nothing. Use when asked what has been done on a project, what is still open, where things stand, whether a bug was ever fixed, what is blocked, or to catch up on a codebase qmw has already worked.
+disallowed-tools: Write, Edit, NotebookEdit
 license: MIT
 ---
 

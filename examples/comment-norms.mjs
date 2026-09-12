@@ -9,7 +9,7 @@
  * Adjust the wording to your own conventions. What is worth keeping is the
  * shape: a rule states its reason, not just its verdict.
  */
-import { commentLinesMatching } from '../skills/ratchet-add/scripts/lib/source.mjs'
+import { commentLinesMatching } from '../skills/freeze-rule/scripts/lib/source.mjs'
 
 const EM_DASH = /\u2014/g
 const REGISTRY_CODE = /\b[A-Z][A-Z0-9]{1,14}-\d{1,4}\b/g

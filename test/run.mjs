@@ -7,7 +7,7 @@
  * mechanism into decoration without breaking anything visibly.
  */
 import { execFileSync } from 'node:child_process'
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
+import { existsSync, mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -155,15 +155,59 @@ const COUNT_FOO = `export default {
 }
 `
   const clean = sandbox({ 'src/a.ts': 'fine\n', 'gate.mjs': GATE })
-  ratchet(clean, join(clean, 'gate.mjs'), '--update')
-  check('a clean gate passes', ratchet(clean, join(clean, 'gate.mjs')).code === 0)
+  const direct = ratchet(clean, join(clean, 'gate.mjs'))
+  check('a clean gate passes without a baseline ever frozen', direct.code === 0, direct.out)
+  const freeze = ratchet(clean, join(clean, 'gate.mjs'), '--update')
+  check('freezing a gate-only definition writes nothing', freeze.code === 0 && !existsSync(join(clean, 'baseline.json')), freeze.out)
   rmSync(clean, { recursive: true, force: true })
 
   const dirty = sandbox({ 'src/a.ts': 'banned\n', 'gate.mjs': GATE })
-  ratchet(dirty, join(dirty, 'gate.mjs'), '--update')
   const verify = ratchet(dirty, join(dirty, 'gate.mjs'))
   check('a gate fails on a single occurrence', verify.code === 1, verify.out)
   rmSync(dirty, { recursive: true, force: true })
+}
+
+// --- a global flag on a path filter must not skip every other file ---------
+{
+  const GLOBAL = COUNT_FOO.replace('match: /\\.ts$/', 'match: /\\.ts$/g')
+  const root = sandbox({ 'src/a.ts': 'foo\n', 'src/b.ts': 'foo\n', 'src/c.ts': 'foo\n', 'src/d.ts': 'foo\n', 'g.mjs': GLOBAL })
+  const freeze = ratchet(root, join(root, 'g.mjs'), '--update')
+  check('scan.match with a g flag sees every file', freeze.out.includes('foo=4'), freeze.out)
+  rmSync(root, { recursive: true, force: true })
+}
+
+// --- a detector without a global flag counts one hit, not its groups ------
+{
+  const GROUPS = COUNT_FOO.replace('source.match(/foo/g)', 'source.match(/(f)(o)(o)/)')
+  const root = sandbox({ 'src/a.ts': 'foo foo\n', 'groups.mjs': GROUPS })
+  const freeze = ratchet(root, join(root, 'groups.mjs'), '--update')
+  check('a non-global match is one hit', freeze.out.includes('foo=1'), freeze.out)
+  rmSync(root, { recursive: true, force: true })
+}
+
+// --- a dangling symlink does not crash the filesystem walk ----------------
+{
+  const root = sandbox({ 'src/a.ts': 'foo\n', 'demo.mjs': COUNT_FOO })
+  symlinkSync(join(root, 'nowhere.ts'), join(root, 'src', 'dangling.ts'))
+  const freeze = ratchet(root, join(root, 'demo.mjs'), '--update')
+  check('a dangling symlink is skipped', freeze.code === 0 && freeze.out.includes('foo=1'), freeze.out)
+  rmSync(root, { recursive: true, force: true })
+}
+
+// --- a malformed definition is a readable error, not a stack trace --------
+{
+  const root = sandbox({
+    'src/a.ts': 'foo\n',
+    'norules.mjs': "export default { name: 'x', scan: { dirs: ['src'], match: /x/ } }\n",
+    'badrule.mjs': "export default { name: 'x', scan: { dirs: ['src'], match: /x/ }, rules: { r: { regime: 'ratchet', why: 'w' } } }\n",
+    'noscan.mjs': "export default { name: 'x', rules: { r: { regime: 'ratchet', detect: () => [], why: 'w' } } }\n",
+  })
+  for (const file of ['norules.mjs', 'badrule.mjs', 'noscan.mjs']) {
+    const result = ratchet(root, join(root, file))
+    check(`${file} exits 2`, result.code === 2, result.out)
+    check(`${file} names the fault`, result.out.includes('invalid definition') && !result.out.includes('    at '), result.out)
+  }
+  rmSync(root, { recursive: true, force: true })
 }
 
 // --- escapes judge the surrounding line ----------------------------------

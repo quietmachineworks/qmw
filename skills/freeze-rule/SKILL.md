@@ -1,6 +1,7 @@
 ---
 name: freeze-rule
 description: Build a check that enforces a code rule, as a ratchet that freezes existing violations and fails on a rise, or as a gate that tolerates none. Use when the user says they no longer want something in a codebase, that a rule is never respected, that a mistake keeps coming back, or asks to prevent a regression, freeze technical debt, ban a pattern, or enforce a convention. Takes the rule as an argument.
+argument-hint: "[the rule, in one verifiable sentence]"
 license: MIT
 ---
 

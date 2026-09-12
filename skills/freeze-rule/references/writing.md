@@ -81,7 +81,18 @@ the check on its next run.
 }
 ```
 
-`detect` returns an array of hits. Length is what gets counted.
+`detect` returns an array of hits. Length is what gets counted. Write the
+regex with the `g` flag: `String.match` without it returns one match and its
+capture groups, and the runner then counts that as one hit rather than as
+four, so the count stays right but the file's other occurrences are missed.
+
+`scan.match`, a rule's `match` and its `escapes` are path and line filters,
+tested with `search`, so a stray `g` flag on them changes nothing. Leave it
+off anyway; a filter is not a counter.
+
+The runner validates the definition before running it: a missing `rules`, a
+`detect` that is not a function, a `regime` that is neither `ratchet` nor
+`gate`, or a `scan` without `dirs` and `match` exits 2 with the field named.
 
 `why` is required: `--update` refuses to freeze a rule without one, because a
 placeholder written to be filled in later never is.

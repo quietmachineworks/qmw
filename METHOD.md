@@ -132,15 +132,33 @@ full review, `/qmw:full-cycle` runs the cycle in order: audit-codebase, then a
 refactor for each finding the owner picks, then upgrade-deps, then a run-qa, then
 a check-release that ends on a go or a no-go for the tag. It
 orchestrates and gates; it does not do the work itself, and it never skips the
-gate between legs. It is a command rather than a skill on purpose, the same
-reason `/qmw:help` is: a skill pays its description on every prompt of every
-session, and a composition orchestrator has nothing to say until you type it.
+gate between legs. It is invoked by hand only, like `/qmw:help`
+(`disable-model-invocation: true`): a composition orchestrator has nothing to
+say until you type it, and the agent never starts a whole passage on its own.
+
+## What the harness holds, and what the text holds
+
+The line above is held two ways. The text of every skill states it. The
+frontmatter enforces the half the harness can enforce: a skill that audits
+declares `disallowed-tools: Write, Edit, NotebookEdit`, so for the turn it runs
+in those tools are not in the pool at all, and "writes nothing" does not depend
+on the model reading the paragraph that says so. `audit-agent` is the one
+exception, because its `clean` mode edits configuration on the user's approval,
+and its two reading modes hold to the text alone.
+
+The skills that change a tree and drive a browser (`run-qa`, `fix-bug`,
+`upgrade-deps`, `build-feature`) declare `disable-model-invocation: true`: they
+run when typed and never because a request sounded close enough. `refactor` and
+`freeze-rule` stay open to the agent, since being reached for from a pasted
+finding or a "never again" is the point of both.
 
 ## Adding a skill
 
 One repository, one plugin, one release. A new skill is a folder under `skills/`
 whose name is what people type after `/qmw:`, a `SKILL.md` whose frontmatter
-`name` matches the folder, and a mention in `README.md` and `commands/help.md`.
-CI enforces all three. What it cannot enforce is that the new skill sits cleanly
-on one side of the line above, writes to the shared root the way the others do,
-and delegates into the same three roles. That is what this document is for.
+`name` matches the folder, a mention in `README.md` and in the `/qmw:help` map,
+and a line under Unreleased in `CHANGELOG.md`. A skill that audits declares the
+tools it does without. `test/repo.mjs` checks all of it and CI runs it. What it
+cannot enforce is that the new skill sits cleanly on one side of the line
+above, writes to the shared root the way the others do, and delegates into the
+same three roles. That is what this document is for.

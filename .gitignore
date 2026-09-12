@@ -1,3 +1,5 @@
 node_modules/
 *-baseline.json
+!.ratchet/rules/*-baseline.json
 .serena/
+evals/results/

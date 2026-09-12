@@ -7,6 +7,64 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Fixed
+
+- `examples/comment-norms.mjs` imported the helper from the skill's pre-0.7.0
+  path and loaded on nobody's machine. The path is corrected, and the repo
+  check now imports every example.
+- A definition holding only gates could not be verified until `--update` had
+  been run once, contrary to what the references promised. A gate-only
+  definition now verifies with no baseline and `--update` on it writes nothing.
+- A `scan.match` written with the `g` flag alternated between hit and miss
+  across files and froze half the repository as the whole of it. Path filters
+  and escapes are now tested with `search`, which ignores the flag.
+- A `detect` written without the `g` flag counted the match and its capture
+  groups as separate hits. A non-global match result is now one hit.
+- A dangling symlink crashed the filesystem walk used outside git; it is now
+  skipped. A definition missing `rules`, `scan`, a `detect` function or a valid
+  `regime` produced a stack trace; it now exits 2 naming the field.
+- The plugin and marketplace descriptions, one line of the README and the
+  contributing, security and issue files still described the pre-0.7.0
+  toolkit. Rewritten for what the repository is now.
+- The README, METHOD and full-cycle text claimed a command's description is not
+  paid on every prompt while a skill's is. Commands and skills are one thing
+  in Claude Code and both pay; the claim is gone, and the mechanism that does
+  keep a heavy workflow out of the agent's hands is declared instead.
+
+### Changed
+
+- `help` and `full-cycle` moved from `commands/` to `skills/`, which is where
+  the runtime now wants them, each with `disable-model-invocation: true`.
+- The audit skills (`audit-rules`, `audit-codebase`, `check-release`, `status`)
+  declare `disallowed-tools: Write, Edit, NotebookEdit`, so "writes nothing"
+  is held by the harness for the turn and not only by the text. `run-qa`,
+  `fix-bug`, `upgrade-deps` and `build-feature` declare
+  `disable-model-invocation: true`. `freeze-rule`, `refactor`, `build-feature`
+  and `fix-bug` carry an `argument-hint`. `build-feature`'s description is
+  shorter, same triggers.
+- The reference on wiring CI no longer offers an npm dependency on the runner:
+  there is no published package, and vendoring is the only path.
+
+### Added
+
+- `test/repo.mjs`: manifests parse and agree, one version across
+  `package.json`, `plugin.json` and the changelog, every skill named and
+  described under the length the runtime truncates at, audit skills disallow
+  the write tools, every `/qmw:` reference and every relative markdown link
+  resolves, the vendored runner matches the shipped one, the examples load.
+  CI runs it, alongside `claude plugin validate --strict`.
+- `.ratchet/` on this repository: a gate on em dashes, on the pre-0.7.0
+  names outside the changelog, and on assistant attribution in files and
+  commit trailers, plus a TODO ratchet frozen at zero. A `commit-msg` hook
+  under `.githooks/` runs the commit rules as the message is written.
+- `evals/`: four behavioral cases in the `claude plugin eval` layout, one per
+  audit skill asserting the skill fired and nothing was written, one on
+  `freeze-rule` asserting it measures and asks for the incident before writing
+  a detector. Run on dispatch by `.github/workflows/evals.yml`.
+- `.github/workflows/release.yml`: a `v*` tag publishes its changelog section
+  as the GitHub release, and refuses a tag the manifests or the changelog do
+  not carry.
+
 ## [0.7.0] - 2026-09-12
 
 ### Changed
@@ -325,3 +383,11 @@ First release.
   checks for the ones chosen.
 - References covering detector authoring, the invariants, and CI wiring.
 - Two example definitions, kept as illustrations of the format.
+
+[Unreleased]: https://github.com/quietmachineworks/qmw/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/quietmachineworks/qmw/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/quietmachineworks/qmw/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/quietmachineworks/qmw/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/quietmachineworks/qmw/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/quietmachineworks/qmw/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/quietmachineworks/qmw/releases/tag/v0.2.0

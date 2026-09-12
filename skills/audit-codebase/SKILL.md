@@ -1,6 +1,7 @@
 ---
 name: audit-codebase
 description: Audit an entire codebase, or one perimeter of it (front, back, mobile, infra), against the practices current for the stack it actually runs. Reports and prioritizes, fixes nothing, writes nothing. Use when asked for a code audit, a health check, a technical-debt review, or whether the code is over-engineered, duplicated or out of date.
+disallowed-tools: Write, Edit, NotebookEdit
 license: MIT
 ---
 

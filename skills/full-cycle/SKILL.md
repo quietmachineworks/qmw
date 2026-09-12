@@ -1,10 +1,13 @@
 ---
+name: full-cycle
 description: The full review cycle in one guided passage - audit-codebase, then a refactor per finding you pick, upgrade-deps, run-qa, and a check-release that ends on go or no-go for the tag
+disable-model-invocation: true
+license: MIT
 ---
 
 A full cycle takes a codebase through the whole review in one pass, not one
 repair: audited, fixed on your orders, and checked before it ships.
-This command sequences the skills through that cycle. It orchestrates and gates;
+This skill sequences the others through that cycle. It orchestrates and gates;
 it does not do the work itself. Each leg is the matching skill, run in full, with
 its own standard of proof. Between every leg the passage stops for the user, and
 **silence is not approval**: an unanswered gate ends the passage, it does not
@@ -24,13 +27,13 @@ Then state the passage in one block: the legs below, which the project has
 substrate for (no front end, no run-qa leg; no dependencies in scope, no
 upgrade-deps leg), and which the user wants in this cycle. A user who named a
 narrower scope in their request skips the ones they left out. Nothing is written
-to the repository by this command itself; each leg's own skill writes what it
+to the repository by this skill itself; each leg's own skill writes what it
 writes.
 
 ## The legs, in order
 
 Each leg hands off to its skill, which runs to its own close, including its own
-setup interview on a first run. This command adds the gate between legs, nothing
+setup interview on a first run. This skill adds the gate between legs, nothing
 more, and never softens a skill's discipline to keep the passage moving.
 
 **1. Audit the codebase.** Run `/qmw:audit-codebase`. Present its report.

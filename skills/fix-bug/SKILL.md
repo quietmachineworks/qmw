@@ -1,6 +1,8 @@
 ---
 name: fix-bug
 description: Run one reported bug from incident to proven fix, reproduced in a real browser before any code moves and proven through the UI afterwards. Use when a user reports a bug, a screenshot of a problem arrives, a production incident lands, or when asked to fix something and prove it rather than assume it.
+argument-hint: "[the report, in the reporter's own words]"
+disable-model-invocation: true
 license: MIT
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: run-qa
 description: Play a real user through a product's UI, screen by screen, on a genuinely empty environment, until every screen in scope survives contact with reality. Use when asked to run a manual QA pass, a user-acceptance pass, "as a human, for real", to shake a product out before shipping, or to resume a pass already in progress.
+disable-model-invocation: true
 license: MIT
 ---
 

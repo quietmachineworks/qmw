@@ -1,6 +1,7 @@
 ---
 name: audit-rules
 description: Report which of a project's stated code rules are actually enforced, and which could be. Use when asked which conventions are enforced, whether a rule is respected, what the CLAUDE.md or AGENTS.md rules are worth, or to review the gap between what a project says and what it checks. Read-only, writes nothing.
+disallowed-tools: Write, Edit, NotebookEdit
 license: MIT
 ---
 

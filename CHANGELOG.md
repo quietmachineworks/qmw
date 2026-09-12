@@ -7,6 +7,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-09-12
+
 ### Fixed
 
 - `examples/comment-norms.mjs` imported the helper from the skill's pre-0.7.0
@@ -384,7 +386,8 @@ First release.
 - References covering detector authoring, the invariants, and CI wiring.
 - Two example definitions, kept as illustrations of the format.
 
-[Unreleased]: https://github.com/quietmachineworks/qmw/compare/v0.7.0...HEAD
+[Unreleased]: https://github.com/quietmachineworks/qmw/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/quietmachineworks/qmw/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/quietmachineworks/qmw/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/quietmachineworks/qmw/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/quietmachineworks/qmw/compare/v0.4.0...v0.5.0

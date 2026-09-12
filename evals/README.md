@@ -15,7 +15,7 @@ work. Half of it is mechanical, from the tool calls (`tool_used`, `tool_order`)
 and from the log file itself (`target: { source: file, path }`); the rest is
 judged from the reply. Those are the checks the text cannot make on itself.
 
-Three things a repair case learns the hard way. A case that grants `Bash` runs
+Four things a repair case learns the hard way. A case that grants `Bash` runs
 the agent in a sandbox, and on macOS `git` there can be the Xcode shim, which
 cannot write its cache and fails; no grader may require a commit to have
 happened, so the case asks for the commit or for the `deviated:` line that says
@@ -26,6 +26,12 @@ with `focus: trace` votes against a trace that plainly satisfies it, on one
 narrow question as much as on five: a quarter of a megabyte of JSONL is past
 what a judge reads reliably. Order is held by `tool_order` and `tool_used`
 instead, and what the run must say about its own gate is judged from the reply.
+And a judged rubric holds a couple of unmistakable facts, no more. Six
+conditions with five failure clauses failed replies that met every one of them,
+because the three judges share one prompt and a single misreading becomes a
+unanimous verdict. Structure belongs in `tool_used` and `tool_order`, whose
+verdicts carry their own evidence; the judge is asked what only prose can
+answer.
 
 ```bash
 claude plugin eval . --scaffold --judge-model sonnet --allow-tools Bash Write Edit   # from the plugin root; calls the model on your credentials

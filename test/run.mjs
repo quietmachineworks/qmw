@@ -13,7 +13,7 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
-const RUNNER = resolve(HERE, '..', 'skills', 'ratchet-add', 'scripts', 'ratchet.mjs')
+const RUNNER = resolve(HERE, '..', 'skills', 'freeze-rule', 'scripts', 'ratchet.mjs')
 
 let passed = 0
 const failures = []
@@ -169,7 +169,7 @@ const COUNT_FOO = `export default {
 // --- escapes judge the surrounding line ----------------------------------
 {
   // A file URL, not a path: `C:\...` is not a legal ESM specifier.
-  const HELPER = pathToFileURL(resolve(HERE, '..', 'skills', 'ratchet-add', 'scripts', 'lib', 'source.mjs')).href
+  const HELPER = pathToFileURL(resolve(HERE, '..', 'skills', 'freeze-rule', 'scripts', 'lib', 'source.mjs')).href
   const ESCAPED = `import { commentLinesMatching } from ${JSON.stringify(HELPER)}
 export default {
   name: 'escaped',

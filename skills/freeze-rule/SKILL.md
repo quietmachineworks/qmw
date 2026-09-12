@@ -1,20 +1,20 @@
 ---
-name: ratchet-add
+name: freeze-rule
 description: Build a check that enforces a code rule, as a ratchet that freezes existing violations and fails on a rise, or as a gate that tolerates none. Use when the user says they no longer want something in a codebase, that a rule is never respected, that a mistake keeps coming back, or asks to prevent a regression, freeze technical debt, ban a pattern, or enforce a convention. Takes the rule as an argument.
 license: MIT
 ---
 
-# Add
+# Freeze rule
 
 Build the check for one rule: `$ARGUMENTS`
 
-If no rule was given, ask for one. To find candidates instead, `/qmw:ratchet-audit` lists what a project states and never enforces.
+If no rule was given, ask for one. To find candidates instead, `/qmw:audit-rules` lists what a project states and never enforces.
 
 Several rules can be built in one session, but finish each before starting the next, and stop between them for the user to confirm. Each costs a CI step and a baseline, and the step that gets skipped when they run together is asking what incident the rule came from, which is the one that decides whether the rule survives.
 
 ## Which project
 
-The runner scans the current working directory. Confirm it is the repository the rule is for before writing anything: a session started elsewhere, or one that arrives from `/qmw:ratchet-audit` run against another checkout, will otherwise install the check in the wrong tree.
+The runner scans the current working directory. Confirm it is the repository the rule is for before writing anything: a session started elsewhere, or one that arrives from `/qmw:audit-rules` run against another checkout, will otherwise install the check in the wrong tree.
 
 ## 1. State the rule in one verifiable sentence
 

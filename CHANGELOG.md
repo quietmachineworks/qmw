@@ -7,6 +7,53 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed the whole toolkit from the nautical scheme to descriptive, dev-legible
+  handles, and dropped the nautical metaphor from the prose: `survey` is
+  `audit-codebase`, `refit` is `refactor`, `drydock` is `upgrade-deps`,
+  `shakedown` is `run-qa`, `squawk` is `fix-bug`, `seatrial` is `check-release`,
+  `manifest` is `audit-agent`, `ratchet-audit` is `audit-rules`, `ratchet-add`
+  is `freeze-rule`, and the composed passage `haulout` is `full-cycle`. The
+  handles now carry the audit-or-repair split in their verbs. State directories
+  move with them (`.qmw/refactor/`, `.qmw/fix-bug/`, `.qmw/run-qa/`,
+  `.qmw/upgrade-deps/`), with no compatibility for the earlier `.qmw/<old>/`
+  layout. `audit-agent`'s cost verdicts `freight` and `ballast` are now
+  `overhead` and `deadweight`.
+
+### Added
+
+- New skill: `build-feature`, the forward twin of `refactor`. Refactor changes
+  structure and proves nothing observable moved; this adds behavior and proves
+  the one intended thing landed, and nothing else did. One intention per run,
+  its finish line written before the first edit, the surfaces that must not move
+  pinned first, the intention played through until it lands (in a browser for a
+  front end, at every declared breakpoint), a regression test at the level the
+  behavior lives, and fresh eyes on the diff judging both that the intention
+  landed and that nothing held has moved. One commit, one entry in
+  `.qmw/build-feature/log.md`. A bug found mid-build is handed to `fix-bug`,
+  never folded in. Narrow and proof-centric on purpose: not a planning tool,
+  not a substitute for the base tools that write routine code.
+- New skill: `status`, qmw's records read back. Where the working skills touch
+  code and `audit-agent` audits the agent, this reads what qmw left under
+  `.qmw/` and reports where the work stands: the bugs still open, the changes
+  landed and the next one they named, the dependencies held with the price of
+  unblocking each, the last release verdict. Details what needs a decision,
+  lists the rest, closes on the record's own next step handed back as an
+  invocation. Reads the records, never re-runs the skills; writes nothing.
+- New command: `/qmw:full-cycle`, the full review cycle in one guided passage.
+  Audit-codebase, then a refactor per finding the owner picks, upgrade-deps, a
+  run-qa, and a check-release that ends on a go or no-go for the tag. It
+  orchestrates and gates; it does not do the work itself, never softens a
+  skill's discipline to keep moving, and never skips the gate between legs,
+  where silence is not approval. A command and not a skill, the same reason
+  `/qmw:help` is.
+- `METHOD.md`, the connective tissue the individual `SKILL.md` files cannot
+  carry because each has to run alone: the two disciplines (audit writes
+  nothing, repair proves it did), the order the skills feed each other in drawn
+  as one graph, the shared `.qmw/` state root, and the three roles they
+  delegate into (executor, controller, fresh eyes).
+
 ## [0.6.0] - 2026-09-03
 
 ### Changed

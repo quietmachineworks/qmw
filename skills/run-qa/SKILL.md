@@ -1,22 +1,20 @@
 ---
-name: shakedown
+name: run-qa
 description: Play a real user through a product's UI, screen by screen, on a genuinely empty environment, until every screen in scope survives contact with reality. Use when asked to run a manual QA pass, a user-acceptance pass, "as a human, for real", to shake a product out before shipping, or to resume a pass already in progress.
 license: MIT
 ---
 
-# Shakedown
+# Run QA
 
-A shakedown cruise is the first time a ship runs under real conditions, before it carries real passengers - the point where whatever a dry dock could never reveal finally shows up. This skill is the same idea applied to a product: play a real user, on a real front end, on a genuinely empty environment, until every intention in scope actually lands.
+The first time the product runs under real conditions, before real users do: play a real user, on a real front end, on a genuinely empty environment, until every intention in scope actually lands. It surfaces what a clean test suite structurally cannot.
 
 It is not a UX review (opinions on what's good) and not a refactor pass (making existing code better). It is a **reliability pass**: every link, every action, every form gets exercised for real, and whatever breaks gets fixed on the spot.
 
 **Front end only.** This skill drives a browser, by accessibility tree and locators, not by curling endpoints. An API-only or CLI-only surface needs a different tool.
 
-## Where the fleet keeps its state
+## Shared state
 
-Every path below written `.shakedown/...` resolves under the fleet's shared root: `.qmw/shakedown/...` at the repository top. One root is what lets the skills read each other - a gate established here is the gate `/qmw:refit` and `/qmw:squawk` find, and a registry left here is what a later pass resumes from - instead of each one guessing at a sibling's private directory.
-
-A project set up before this convention keeps them at a bare `.shakedown/`. **Read the legacy path when the shared root holds nothing**, work from what is there, and say once that moving it is a single `git mv`. Never write to both.
+Everything this skill writes lives under `.qmw/run-qa/` at the repository top: `config.md`, the persona briefs, and the living registry. One root is what lets qmw's skills read each other, so a gate established here is the gate `refactor` and `fix-bug` find, and a registry left here is what a later pass resumes from, instead of each skill guessing at another's private directory.
 
 ## Before the first pass: setup
 
@@ -24,15 +22,15 @@ If neither root exists in the project, this is a first run. Stop and interview b
 
 Ask, and write the answer where noted:
 
-1. **Reset** - "What actually empties the environment for a pass?" A command, or explicitly *no reset is possible* (shared or staging environment) - which changes the shape of the pass, see §1. → `.shakedown/config.md`, `reset`.
-2. **Personas** - who uses this product, and for each: *"tell me their real job - typical volumes, how often they repeat this gesture, their vocabulary, their constraints."* One file per persona, `.shakedown/personas/<slug>.md`. **A brief you can't get a real answer for gets written as incomplete, not invented.** The controller (§4b) is only as sharp as this brief.
-3. **Topology** - does an account get structured in more than one way (multi-tenant, an organization/sub-entity hierarchy, more than one membership path)? If yes, list them; each gets covered separately. → `.shakedown/config.md`, `topology`.
-4. **Breakpoints** - what viewport widths this product actually has to survive at: ask for real numbers (desktop / tablet / mobile, or however many the product targets - a desktop-only admin tool may need two, a consumer app might want more than three). Don't assume 1440/1024/390 without asking; a product with its own design system usually already has these numbers written down. → `.shakedown/config.md`, `breakpoints`.
-5. **Scope** - which document is authoritative on what's in and out of this pass, or *the whole product*. → `.shakedown/config.md`, `scope`.
-6. **Gate** - what has to pass before a push. Propose what's detectable (`package.json` scripts, CI config) and get it confirmed rather than assumed. → `.shakedown/config.md`, `gate`.
-7. **Registry** - where the living record lives and its ID-prefix convention (defaults in §6 if the project has no preference). → `.shakedown/config.md`, `registry`.
+1. **Reset** - "What actually empties the environment for a pass?" A command, or explicitly *no reset is possible* (shared or staging environment) - which changes the shape of the pass, see §1. → `.qmw/run-qa/config.md`, `reset`.
+2. **Personas** - who uses this product, and for each: *"tell me their real job - typical volumes, how often they repeat this gesture, their vocabulary, their constraints."* One file per persona, `.qmw/run-qa/personas/<slug>.md`. **A brief you can't get a real answer for gets written as incomplete, not invented.** The controller (§4b) is only as sharp as this brief.
+3. **Topology** - does an account get structured in more than one way (multi-tenant, an organization/sub-entity hierarchy, more than one membership path)? If yes, list them; each gets covered separately. → `.qmw/run-qa/config.md`, `topology`.
+4. **Breakpoints** - what viewport widths this product actually has to survive at: ask for real numbers (desktop / tablet / mobile, or however many the product targets - a desktop-only admin tool may need two, a consumer app might want more than three). Don't assume 1440/1024/390 without asking; a product with its own design system usually already has these numbers written down. → `.qmw/run-qa/config.md`, `breakpoints`.
+5. **Scope** - which document is authoritative on what's in and out of this pass, or *the whole product*. → `.qmw/run-qa/config.md`, `scope`.
+6. **Gate** - what has to pass before a push. Propose what's detectable (`package.json` scripts, CI config) and get it confirmed rather than assumed. → `.qmw/run-qa/config.md`, `gate`.
+7. **Registry** - where the living record lives and its ID-prefix convention (defaults in §6 if the project has no preference). → `.qmw/run-qa/config.md`, `registry`.
 
-On every later invocation, read `.shakedown/config.md` and `.shakedown/personas/*.md` and skip straight to the pass. **If a pass reaches a persona with no brief, or an incomplete one, stop and ask before letting the controller judge blind with it** - same refusal as asking for the incident before writing a check: skipping it produces a placeholder nobody comes back to.
+On every later invocation, read `.qmw/run-qa/config.md` and `.qmw/run-qa/personas/*.md` and skip straight to the pass. **If a pass reaches a persona with no brief, or an incomplete one, stop and ask before letting the controller judge blind with it** - same refusal as asking for the incident before writing a check: skipping it produces a placeholder nobody comes back to.
 
 ---
 
@@ -92,7 +90,7 @@ The controller doesn't click to move the pass forward. **It puts on the tested p
 
 This is a separate role for a specific reason: whoever just spent forty minutes making a screen work is the worst-placed person alive to find it illogical. They know why everything is where it is. **The controller doesn't, and that's exactly its value.**
 
-**The controller is not a generic first-time user - it's an expert of the persona's actual job**, briefed from `.shakedown/personas/<slug>.md`. That distinction is what catches the failures a naive walkthrough can't:
+**The controller is not a generic first-time user - it's an expert of the persona's actual job**, briefed from `.qmw/run-qa/personas/<slug>.md`. That distinction is what catches the failures a naive walkthrough can't:
 
 - the **real volume** this role deals with (a naive check tests a list of twelve; the real job has hundreds);
 - the **real frequency** of the gesture (weekly for nine months, not once);
@@ -136,7 +134,7 @@ The same shape shows up disguised as client-side state: a value copied from a pa
 
 ### d) What passes between them
 
-The executor hands back: the intention played, the gestures exercised, screenshots at every breakpoint declared in `.shakedown/config.md` (§5a-bis) - never just the one convenient to capture - the entries it opened.
+The executor hands back: the intention played, the gestures exercised, screenshots at every breakpoint declared in `.qmw/run-qa/config.md` (§5a-bis) - never just the one convenient to capture - the entries it opened.
 
 The controller hands back: **one verdict per intention**, and every finding written **in the persona's first person** - "I just asked to join and got nothing back" beats "no notification on approval" by an order of magnitude. That phrasing is what makes a defect impossible to argue with.
 
@@ -173,7 +171,7 @@ Check every time: correct destination, **no console error**, no server-render er
 
 ### a-bis) Breakpoints - a loop, not an afterthought
 
-Every screen that renders anything visible (not a pure redirect or a background call) gets walked through **each width in `.shakedown/config.md`'s `breakpoints`, in sequence, every single time** - resize, re-observe, move to the next width. This is a separate, mandatory step, not something that happens only "if the screen looks responsive" or only once at the end of a screen series. Skipping it is the single easiest way to hand the controller a verdict that's only true at one width.
+Every screen that renders anything visible (not a pure redirect or a background call) gets walked through **each width in `.qmw/run-qa/config.md`'s `breakpoints`, in sequence, every single time** - resize, re-observe, move to the next width. This is a separate, mandatory step, not something that happens only "if the screen looks responsive" or only once at the end of a screen series. Skipping it is the single easiest way to hand the controller a verdict that's only true at one width.
 
 At each width, hunt for what only breaks at a size, never at the one the screen happened to get built at: content that overflows and clips, an action that falls below a fold with no way to reach it, elements overlapping, a control that becomes unreachable. These are controller findings like any other (§4b), and get logged even if they don't reproduce at every width.
 
@@ -221,7 +219,7 @@ Every bug found gets fixed **immediately**. A non-blocking product call gets log
 
 ## 6. The registry
 
-`.shakedown/registry` (path from config), kept live **during** the pass, never reconstructed at the end.
+`.qmw/run-qa/registry` (path from config), kept live **during** the pass, never reconstructed at the end.
 
 Header: the scope cited, a **continued numbering** (pick up above the max of every module across every past registry - never reuse an ID), and a **resume point** block at the top saying exactly where things stand - that's what makes the pass resumable after a context reset.
 
@@ -252,11 +250,11 @@ A non-blocking product call gets logged, the pass continues, and it gets present
 
 ## 8. Scope
 
-Reference: whatever `.shakedown/config.md` names as authoritative on scope. Anything out of scope only matters if it **leaks** into an in-scope surface - and that leak is itself a defect.
+Reference: whatever `.qmw/run-qa/config.md` names as authoritative on scope. Anything out of scope only matters if it **leaks** into an in-scope surface - and that leak is itself a defect.
 
 ## 9. Delivery
 
-Whatever gate `.shakedown/config.md` records, run before any push, scoped to what actually changed.
+Whatever gate `.qmw/run-qa/config.md` records, run before any push, scoped to what actually changed.
 
 Tests written during the pass serve the real user: behavior/outcome or TDD, never a mock call-count assertion as proof something works. `expect(mockTx.insert).toHaveBeenCalled()` stays green while the real endpoint returns a 500.
 
@@ -264,4 +262,4 @@ Tests written during the pass serve the real user: behavior/outcome or TDD, neve
 
 ## Living skill
 
-The moment the user refines, corrects, or adds a process rule mid-pass, **update `.shakedown/config.md` (or the relevant persona file) in the same turn**, then apply it. A process rule that only lives in the conversation is a rule that's already lost the next time this pass runs.
+The moment the user refines, corrects, or adds a process rule mid-pass, **update `.qmw/run-qa/config.md` (or the relevant persona file) in the same turn**, then apply it. A process rule that only lives in the conversation is a rule that's already lost the next time this pass runs.

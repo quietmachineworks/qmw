@@ -1,12 +1,12 @@
 ---
-name: seatrial
+name: check-release
 description: Run the release checklist for real before anything ships, from a clean clone to the built product smoked the way production runs it. Ends on go or no-go bound to one commit, fixes nothing. Use when asked whether something is ready to release, to verify a release, or before a tag, publish, or deploy.
 license: MIT
 ---
 
-# Seatrial
+# Check release
 
-Sea trials are the run a vessel makes before delivery: not one more inspection at the dock, the boat taken out and actually run - up to speed, hard over, all stop - and brought back with a list of what failed underway. The dock paperwork says ready. The trial finds out.
+The run a build makes before delivery: not one more inspection of the working tree, the release actually built and exercised the way production will, brought back with a list of what failed. The paperwork says ready; running it for real finds out.
 
 **Fix nothing.** A trial that repaired something along the way proved the repaired thing, not the release. Every blocker is a follow-up the user asks for after the verdict, and any change to the tree voids the verdict: the trial then runs again from the top on the new commit. That is not overhead, it is the definition; a verdict that survives edits it never saw is worthless.
 
@@ -30,7 +30,7 @@ Every leg is executed, not reviewed, with its evidence kept in scratch space, ne
 
 **4. The history.** The diff since the last tag, actually read. Three matches, each a blocker when it fails: every notable change in the diff represented in the changelog; no changelog entry describing work the diff does not contain; the version bump matched to the diff's nature, because a breaking change under a patch bump is a no-go, not a style note. Every file that states the version agrees on it.
 
-**5. The trial run.** The built artifact started the way production starts it - never the dev server - and the critical path walked once, for real: a driven browser for a front end, the primary command for a CLI, a real request for an API, all the way to the effect landing, not to a 200. This leg is a smoke, not a sweep: `/qmw:shakedown` is the full pass, and it belongs before the trial, not inside it.
+**5. The trial run.** The built artifact started the way production starts it - never the dev server - and the critical path walked once, for real: a driven browser for a front end, the primary command for a CLI, a real request for an API, all the way to the effect landing, not to a 200. This leg is a smoke, not a sweep: `/qmw:run-qa` is the full pass, and it belongs before the trial, not inside it.
 
 ## The verdict
 

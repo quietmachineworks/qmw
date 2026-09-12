@@ -1,24 +1,26 @@
 ---
-name: manifest
+name: audit-agent
 description: Audit, price and clean what is installed in the agent itself: skills, commands, subagents, hooks, MCP servers, plugins. Use when asked to audit, review or clean up skills, hooks, plugins, slash commands or agent configuration, when the setup feels bloated or slow, when a skill never seems to fire, or when looking for a skill that does something.
 license: MIT
 ---
 
-# Manifest
+# Audit agent
 
-A ship's manifest declares everything aboard: what it is, what it weighs, who it belongs to, and why it is taking up a berth. Cargo that pays no freight is not romantic, it is displacement. At the next port it is struck from the list and put ashore.
+An agent's manifest is everything it carries into every prompt: what each item is, what it costs, and why it is still installed. A tool that earns nothing is not harmless, it is weight: read and ranked and paid for on every request whether or not it ever fires. Weight that never earns gets taken off.
 
 An agent accumulates the same way. A skill installed for one afternoon, a plugin taken whole for one of its eleven skills, a hook added to fix something that stopped happening, an MCP server for a service nobody calls anymore. None of it announces itself. All of it is read, weighed and carried on every single prompt.
+
+qmw's other reading skill, `status`, audits the work qmw produced; this one audits the agent that produced it.
 
 **Audit and find write nothing.** No files, no config, no installs, no "while I was there". Only `clean` writes, and only what the user approved line by line in the same conversation.
 
 ## The three modes
 
-**`/qmw:manifest`** - the audit. What is aboard, what it weighs, what it earns. The default when no mode is named.
+**`/qmw:audit-agent`** - the audit. What is installed, what it costs, what it earns. The default when no mode is named.
 
-**`/qmw:manifest find <subject>`** - what covers this need: first what is already aboard, then what the ecosystem offers, compared on the same axes. Ends on a recommendation, never on an install.
+**`/qmw:audit-agent find <subject>`** - what covers this need: first what is already installed, then what the ecosystem offers, compared on the same axes. Ends on a recommendation, never on an install.
 
-**`/qmw:manifest clean`** - the deprisation plan, built from an audit and executed one approved item at a time. If no audit ran in this conversation, run one first: cleaning without measuring is guessing at someone's tools.
+**`/qmw:audit-agent clean`** - the deprisation plan, built from an audit and executed one approved item at a time. If no audit ran in this conversation, run one first: cleaning without measuring is guessing at someone's tools.
 
 ## Read the config that is there
 
@@ -54,9 +56,9 @@ Four, defined by cost, not by feeling.
 
 **hazard** - misfires or costs correctness. A hook whose command does not resolve on this machine, an absolute path from a previous laptop, a plugin from a marketplace that no longer answers, a skill whose description promises what its body does not do, a secret in plain text, a check that has been failing open for months. Hazards are first in the report and first out the door, regardless of usage.
 
-**freight** - always-on cost, nothing returned. A hook on a hot matcher that the transcripts never show doing anything, an MCP server whose tools were never called, four hundred characters of description that has never once been selected. Freight is the expensive class: it is paid continuously.
+**overhead** - always-on cost, nothing returned. A hook on a hot matcher that the transcripts never show doing anything, an MCP server whose tools were never called, four hundred characters of description that has never once been selected. Overhead is the expensive class: it is paid continuously.
 
-**ballast** - inert weight. A dormant skill that costs its description and nothing else. Cheap individually, and the reason the menu is long.
+**deadweight** - inert weight. A dormant skill that costs its description and nothing else. Cheap individually, and the reason the menu is long.
 
 **earning** - used, dated, and named as such. An audit that cannot say what is working is a complaint, not a report. Keep this list short: counts and last-used dates, no blocks.
 
@@ -72,9 +74,9 @@ Two others in the same family: an item whose description is so broad it wins req
 
 Two halves, run in parallel, then compared on one set of axes.
 
-**Aboard.** What is already installed that covers the subject, wholly or partly. Partial coverage is the answer more often than not, and it must be stated as such: naming the eighty percent an installed skill already does is worth more than a link to a new one.
+**Installed.** What is already installed that covers the subject, wholly or partly. Partial coverage is the answer more often than not, and it must be stated as such: naming the eighty percent an installed skill already does is worth more than a link to a new one.
 
-**Afloat.** What the ecosystem offers: the marketplaces already registered on this machine first, then whatever skill manager this machine already uses - `skills find <query>` searches the open registry without installing anything, and the lockfile names the upstreams already trusted here - then the open web. Name each candidate with its source, its author and the date it was last touched, because an unmaintained skill is a liability that reads like an asset.
+**Available.** What the ecosystem offers: the marketplaces already registered on this machine first, then whatever skill manager this machine already uses - `skills find <query>` searches the open registry without installing anything, and the lockfile names the upstreams already trusted here - then the open web. Name each candidate with its source, its author and the date it was last touched, because an unmaintained skill is a liability that reads like an asset.
 
 Compare candidates on four axes, always the same four:
 
@@ -97,7 +99,7 @@ The plan is read before anything moves, and the first thing it establishes is wh
 
 **Back up the config before touching it.** Copy the settings files that will change, and if the agent's home directory is not under version control, say so once: that is the cheapest fix in the whole report and it is not this skill's to make.
 
-**One item, one block, one approval.** Grouped by kind, ordered hazards first, then freight, then ballast. Each block carries the exact command or the exact config diff that will run. The user approves an item or a group, and **silence is not approval**: an unanswered block is skipped, not assumed. Approval of one block never carries to the next.
+**One item, one block, one approval.** Grouped by kind, ordered hazards first, then overhead, then deadweight. Each block carries the exact command or the exact config diff that will run. The user approves an item or a group, and **silence is not approval**: an unanswered block is skipped, not assumed. Approval of one block never carries to the next.
 
 Three things are never struck: **project-level configuration** the user does not own, **anything used inside the measurement window**, and **anything whose usage could not be measured**. Where a mechanism exists to disable rather than remove, disable first and let the user delete later from a shorter list.
 
@@ -107,13 +109,13 @@ Close with what changed, in one line per item, and how to undo each. Then stop: 
 
 In the language of the conversation, read in a terminal. No tables: flat blocks, one finding each.
 
-Open with the vessel in five lines: what is aboard by kind and count, the total standing cost with its estimate caveat and what share of a prompt it takes, the hooks sitting on hot matchers, the one sentence a reader wants, and anything found that outranks the audit - a secret in a config, a hook running a path that does not exist, a plugin from a dead marketplace.
+Open with the inventory in five lines: what is installed by kind and count, the total standing cost with its estimate caveat and what share of a prompt it takes, the hooks sitting on hot matchers, the one sentence a reader wants, and anything found that outranks the audit - a secret in a config, a hook running a path that does not exist, a plugin from a dead marketplace.
 
 A finding is five lines:
 
 ```
-freight  a hook on every shell command that has done nothing since March
-  aboard  user settings, PreToolUse on Bash, timeout 5s, runs lint-staged
+overhead  a hook on every shell command that has done nothing since March
+  where   user settings, PreToolUse on Bash, timeout 5s, runs lint-staged
   costs   one process per shell call - roughly 40 per session, 5s worst case each
   earns   0 blocks and 0 modifications across 180 sessions since 2026-03-02
   strike  remove the entry, keep the script - the diff is four lines, backed up first
@@ -121,7 +123,7 @@ freight  a hook on every shell command that has done nothing since March
 
 That finding is invented, and every finding in a real report comes from the machine audited, never from this file. The `strike` line is a direction and a size, not an executed change: nothing in an audit has already happened.
 
-**Detail at most six findings per kind.** The rest is one line each, name and count, under a closing "also" line. A forty-block report is a wall, and the wall loses the hazards along with the notes. Cut from ballast first, then freight, never from hazards.
+**Detail at most six findings per kind.** The rest is one line each, name and count, under a closing "also" line. A forty-block report is a wall, and the wall loses the hazards along with the notes. Cut from deadweight first, then overhead, never from hazards.
 
 Findings are classes where they repeat. Eleven dormant skills from one plugin nobody uses is one finding about the plugin, not eleven about its skills.
 
@@ -135,7 +137,7 @@ deviated: could not read the session transcripts, every usage count is cost-only
 deviated: skipped project-level items on two of the five repositories, out of budget
 ```
 
-Nothing to say is the normal case, and then print nothing at all: not `deviated: none`, not a compliance note. Only what can be counted belongs here - files written against zero, kinds skipped against the scope agreed, verdicts issued without a measurement window. An audit that silently measured half the sessions reports a lighter vessel than the one that sails.
+Nothing to say is the normal case, and then print nothing at all: not `deviated: none`, not a compliance note. Only what can be counted belongs here - files written against zero, kinds skipped against the scope agreed, verdicts issued without a measurement window. An audit that silently measured half the sessions reports a lighter agent than the one that runs.
 
 ## Close on what to do
 
@@ -143,7 +145,7 @@ The last thing printed is the action list, three to five lines, ordered by weigh
 
 ```
 fix the hook path first - hazard, one line, it has been failing open since the laptop change
-/qmw:manifest clean - the eleven ballast items are one plugin uninstall
+/qmw:audit-agent clean - the eleven deadweight items are one plugin uninstall
 narrow the deploy-check description, or strike it - it has never won its own trigger
 ```
 

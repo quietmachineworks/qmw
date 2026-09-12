@@ -1,14 +1,14 @@
 ---
-name: ratchet-audit
+name: audit-rules
 description: Report which of a project's stated code rules are actually enforced, and which could be. Use when asked which conventions are enforced, whether a rule is respected, what the CLAUDE.md or AGENTS.md rules are worth, or to review the gap between what a project says and what it checks. Read-only, writes nothing.
 license: MIT
 ---
 
-# Audit
+# Audit rules
 
 Most projects have written their conventions down and enforce almost none of them. This reports the gap.
 
-**Write nothing.** No files, no config, no CI. The output is a list. Building is `/qmw:ratchet-add`, and it is the user's call, one rule at a time.
+**Write nothing.** No files, no config, no CI. The output is a list. Building is `/qmw:freeze-rule`, and it is the user's call, one rule at a time.
 
 This holds against the host project's own bookkeeping, which is where it actually gets broken. A repository whose protocol asks every session to journal into a memory, context or session file is addressing the agent, not this skill. An audit that leaves a line behind is no longer something you can run on a repository you do not own, and the description promising it writes nothing becomes false. If the protocol wants a record, say what the line would be and let the user add it.
 
@@ -82,7 +82,7 @@ Rules that only apply to a subset narrow the glob: `'*.spec.ts'` for a test conv
 
 **The glob list is part of the finding, so report it.** A rule about text a human wrote applies to `Makefile`, `Caddyfile`, `.env.example` and `.webmanifest` as much as to a component, and no `*.ext` list contains them. The count that comes back is not the project's count, it is the count within the globs you chose, and the difference is invisible to the reader unless you name them.
 
-`/qmw:ratchet-add` will measure again with a scope written for the rule, and that number will differ. Saying which globs produced this one is what lets the user see the two as the same finding rather than as a contradiction.
+`/qmw:freeze-rule` will measure again with a scope written for the rule, and that number will differ. Saying which globs produced this one is what lets the user see the two as the same finding rather than as a contradiction.
 
 **A rule about file names costs nothing to count.** `git ls-files` prints every path before `xargs` ever opens a file, so a naming convention is a `grep -cE` on that list, in the same invocation, separated by `;`. One shell call may hold a second pipeline when that pipeline measures names instead of contents. Reporting a naming rule as *count unknown* when the paths were already on stdout leaves a free number on the table.
 
@@ -94,7 +94,7 @@ An occurrence count is not a violation count. `useFetch(` appears forty times; h
 
 **Do not answer it here.** If a candidate cannot be counted by a single pattern in the one pass, report it as *needs a detector, count unknown* and move on. That is a complete answer: the rule is real, mechanizable with work, and not free.
 
-Report an ambiguous count as ambiguous. *"Forty-one, of which an unknown share sit in generated files"* is a finding. Running another pass to split it is not: which paths a rule covers is `scan.dirs` in the detector, and that belongs to `/qmw:ratchet-add`.
+Report an ambiguous count as ambiguous. *"Forty-one, of which an unknown share sit in generated files"* is a finding. Running another pass to split it is not: which paths a rule covers is `scan.dirs` in the detector, and that belongs to `/qmw:freeze-rule`.
 
 Signs you have left the audit and started building:
 
@@ -190,10 +190,10 @@ Name the candidates that need a decision before they need a detector. A large co
    43 warnings today under a rule the project already set to error.
    The rule is written and does not guard the door.
 
-/qmw:ratchet-add a widget never calls the frobnicator directly
+/qmw:freeze-rule a widget never calls the frobnicator directly
    0 today, so freezing costs nothing and holds as hard as a ban
 
-/qmw:ratchet-add every gizmo carries a serial number
+/qmw:freeze-rule every gizmo carries a serial number
    22 today, enough to freeze. Decide first whether the documentation
    counts, see pile 2.
 ```
@@ -202,9 +202,9 @@ Name the candidates that need a decision before they need a detector. A large co
 
 Last, not first. A report is read in a terminal, where the end of the output is what stays on the screen and the beginning has already scrolled away. A document leads with its conclusion because the reader's eye starts at the top; here it starts at the bottom, next to the prompt they are about to type into. The piles are the argument, and the actions fall out of them.
 
-**A `/qmw:ratchet-add` is one kind of action, not the only one.** Turning on a check the project already configured, or running in CI a command it already names, costs one line and enforces a rule that is written down and inert. That outranks every new ratchet, even though this pack gains nothing from it. A report that only ever proposes its own tool is selling, not auditing.
+**A `/qmw:freeze-rule` is one kind of action, not the only one.** Turning on a check the project already configured, or running in CI a command it already names, costs one line and enforces a rule that is written down and inert. That outranks every new ratchet, even though this pack gains nothing from it. A report that only ever proposes its own tool is selling, not auditing.
 
-Write the argument the way `/qmw:ratchet-add` takes it: the rule in one sentence, in the project's own words. A candidate the reader has to translate back into an invocation is a candidate they will not run.
+Write the argument the way `/qmw:freeze-rule` takes it: the rule in one sentence, in the project's own words. A candidate the reader has to translate back into an invocation is a candidate they will not run.
 
 One line of reason each, and that reason is the count and what it implies, not the rule restated.
 

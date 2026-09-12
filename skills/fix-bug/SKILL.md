@@ -1,26 +1,24 @@
 ---
-name: squawk
+name: fix-bug
 description: Run one reported bug from incident to proven fix, reproduced in a real browser before any code moves and proven through the UI afterwards. Use when a user reports a bug, a screenshot of a problem arrives, a production incident lands, or when asked to fix something and prove it rather than assume it.
 license: MIT
 ---
 
-# Squawk
+# Fix bug
 
-A squawk is what aviation calls a defect written into the aircraft's logbook by whoever just flew it. The word matters less than the discipline around it: the mechanic reproduces the defect before repairing anything, repairs the cause rather than the gauge that revealed it, and nobody signs the logbook without a functional check. This skill applies that discipline to one reported bug at a time.
+The discipline for one reported bug: reproduce it before touching any code, fix the cause rather than the symptom that revealed it, and never sign it off without checking the fix the way the bug was found. This skill runs one incident from report to proven fix.
 
 It is the reactive counterpart to a full QA pass: not a sweep of the product, one incident, run end to end. It depends on nothing but itself.
 
 **Front end only.** The defect gets reproduced and proven in a driven browser (Playwright, a browser MCP, whatever driver is available), by accessibility tree and locators, never by curling endpoints. An API-only symptom still closes through the screen where a user meets it.
 
-## Where the fleet keeps its state
+## Shared state
 
-Every path below written `.squawk/...` resolves under the fleet's shared root: `.qmw/squawk/...` at the repository top. One root is what lets the skills read each other - the gate another skill already established, the registry a past pass wrote, the log of what was repaired last month - instead of each one guessing at a sibling's private directory.
+Everything this skill writes lives under `.qmw/fix-bug/` at the repository top: `config.md`, `log.md`, and one folder per incident. One root is what lets qmw's skills read each other, so the gate another skill already established, and the log of what was repaired last, are found rather than guessed at.
 
-A project set up before this convention keeps them at a bare `.squawk/`. **Read the legacy path when the shared root holds nothing**, work from what is there, and say once that moving it is a single `git mv`. Never write to both.
+## Before the first bug: setup
 
-## Before the first squawk: setup
-
-If neither root exists in the project, ask before touching anything, and write the answers to `.squawk/config.md`:
+If neither root exists in the project, ask before touching anything, and write the answers to `.qmw/fix-bug/config.md`:
 
 1. **Launch** - how the product runs locally and at what URL a browser reaches it.
 2. **Access** - an account that is safe to click around in. If the only environment is production, say so in the config: reproduction steps that create or destroy data then get announced before being played, not after.
@@ -35,7 +33,7 @@ Every later invocation reads the config and goes straight to intake.
 
 One incident, one ID: `SQ-<n>`, numbered upward, never reused. Two homes:
 
-- **`.squawk/log.md`** - the index, one row per incident, the source of truth on status:
+- **`.qmw/fix-bug/log.md`** - the index, one row per incident, the source of truth on status:
 
   ```
   | ID | Sev | Screen | Report | Status | Seen |
@@ -43,7 +41,7 @@ One incident, one ID: `SQ-<n>`, numbered upward, never reused. Two homes:
   | SQ-14 | P1 | /billing | "I paid and the invoice still says unpaid" | red | 2 |
   ```
 
-- **`.squawk/SQ-<n>/report.md`** - the file for everything that doesn't fit a row: the report verbatim, the material, the repro path, the root cause, the proof.
+- **`.qmw/fix-bug/SQ-<n>/report.md`** - the file for everything that doesn't fit a row: the report verbatim, the material, the repro path, the root cause, the proof.
 
 What intake captures:
 
@@ -81,7 +79,7 @@ Once the cause is established, fix it immediately - then treat the fix as unfini
 - **The class is closed, not just the sites.** When the cause is a reimplemented derived fact or a first-element-of-a-list decision (`[0]`, `.find(...)` with no discriminating criterion, `LIMIT 1` with no `ORDER BY`), patching each site found by grep leaves the class alive for the next screen that reinvents it. Extract one canonical source and repoint every carrier at it.
 - **A regression test pins it.** Behavior or outcome, at the level where the bug lived - never a mock call-count assertion. `expect(mockTx.insert).toHaveBeenCalled()` stays green while the real endpoint returns a 500.
 
-The root cause and the fix go into `report.md` in one or two sentences each. That's the entry a future squawk with the same shape gets compared against.
+The root cause and the fix go into `report.md` in one or two sentences each. That's the entry a future bug with the same shape gets compared against.
 
 ## 4. Prove the fix the way the bug was found - through the UI
 
@@ -90,19 +88,19 @@ A fix is proven by the reporter's gesture landing, not by a green test or a clea
 - **Functional** - the repro path from §2, step by step, all the way to the intention from §1 actually landing. Data verified after the save, not assumed from a success toast. **If the original failure involved an existing row, a conflict, or a repeat, replay the gesture a second time** - the first run of a fix exercises exactly the state the bug needed to hide. If the touched field feeds a rule downstream (a fee, an eligibility, a permission), the pass isn't done until that effect has been observed firing.
 - **Visual** - a screenshot in the exact state of the claim: the field filled and focused, the list populated, the error provoked. A screenshot of the empty happy path proves nothing about the state that was broken. The touched element renders like its sibling from the same atom - a fix that leaves a raw border next to a proper one traded a defect for a defect. **Look at the screenshot; don't fall back to reading the DOM** - two nested boxes and a subtly wrong color don't exist in a DOM dump.
 - **UX** - the intention completes without new friction: no added step, no click count that quietly doubled, no message in vocabulary the reporter wouldn't use, no dead promise pointing at a screen that doesn't exist, and the gesture's reciprocal still present (a `deactivate` that now works but killed `reactivate` is not fixed).
-- **UI** - the touched screens walked at **every width in `.squawk/config.md`**, in sequence: resize, read the real viewport back (`window.innerWidth` - a resize call can silently no-op on an unfocused tab), re-observe. No overflow, no clipped content, no control that fell below a fold, no console error at any width.
+- **UI** - the touched screens walked at **every width in `.qmw/fix-bug/config.md`**, in sequence: resize, read the real viewport back (`window.innerWidth` - a resize call can silently no-op on an unfocused tab), re-observe. No overflow, no clipped content, no control that fell below a fold, no console error at any width.
 
 The before/after screenshot pair lands in the incident folder. Then the last check, and it is not optional:
 
-**Fresh eyes sign the logbook.** Whoever spent an hour on the fix is the worst-placed person alive to judge it - they know why everything is where it is. Hand the original report and the after-captures, and nothing about the fix, to a sub-agent playing the reporter, judging one question: *would this person consider their problem solved?* The verdict is ternary - accepted · redo · needs a product call - and a redo reopens §3, not a negotiation.
+**Fresh eyes sign off.** Whoever spent an hour on the fix is the worst-placed person alive to judge it - they know why everything is where it is. Hand the original report and the after-captures, and nothing about the fix, to a sub-agent playing the reporter, judging one question: *would this person consider their problem solved?* The verdict is ternary - accepted · redo · needs a product call - and a redo reopens §3, not a negotiation.
 
 ## 5. Close with proof
 
-An entry turns green only when `report.md` holds all of it: the root cause, the fix and its commit, the before/after captures, the regression test, and the gate from `.squawk/config.md` run against what changed. **Never green without proof.**
+An entry turns green only when `report.md` holds all of it: the root cause, the fix and its commit, the before/after captures, the regression test, and the gate from `.qmw/fix-bug/config.md` run against what changed. **Never green without proof.**
 
 - An investigation that concludes the product is right **still gets its entry closed properly**: `NOT A DEFECT: <why>`, green, with the capture that shows the observed behavior. The trace is what stops the same report from costing a second investigation.
 - Close by writing, at the end of `report.md`, the two sentences worth relaying to the reporter: what was wrong, in their vocabulary, and what to look at to see it fixed. Not a changelog - an answer to the person whose words opened the entry.
 
 ## Living skill
 
-The moment the user refines, corrects, or adds a process rule mid-fix, update `.squawk/config.md` in the same turn, then apply it. A process rule that only lives in the conversation is a rule already lost the next time a report arrives.
+The moment the user refines, corrects, or adds a process rule mid-fix, update `.qmw/fix-bug/config.md` in the same turn, then apply it. A process rule that only lives in the conversation is a rule already lost the next time a report arrives.

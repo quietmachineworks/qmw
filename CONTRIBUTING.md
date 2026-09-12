@@ -41,7 +41,8 @@ and passes after. The runner is vendored into `.ratchet/` for this
 repository's own checks; copy it again after changing it, `test/repo.mjs`
 refuses a drifted copy.
 
-The behavioral evals under `evals/` run with `claude plugin eval . --scaffold`
+The behavioral evals under `evals/` run with `claude plugin eval . --scaffold
+--allow-tools Bash Write Edit`
 and call the model on your credentials. Run them when a skill's text or
 description changes; they are not part of the default CI.
 
@@ -54,7 +55,10 @@ description changes; they are not part of the default CI.
   that commits or drives a browser declares `disable-model-invocation: true`
 - a mention in `README.md`, English and French, and in the `/qmw:help` map
 - a line under Unreleased in `CHANGELOG.md`
-- for an audit skill, an eval case under `evals/` asserting it wrote nothing
+- for an audit skill, an eval case under `evals/` asserting it wrote nothing;
+  for a repair skill, one asserting it proved: gate before and after, the class
+  closed, the log entry, fresh eyes on the diff by a sub-agent that did not do
+  the work
 
 ## Conventions
 

@@ -12,19 +12,22 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `evals/refactor-proves-nothing-moved`: the first case on the repair half of
   the line. A fixture with three copies of `formatDate`, two cited by the
   finding and one not, two of them pinned by tests and one not, and a `.qmw/`
-  that already carries the gate. The graders hold what the skill's text
-  promises: the third carrier found, the class closed to one source, the gate
-  green before the first edit and after the last, the untested carrier pinned,
-  the `RF-2` entry in `.qmw/refactor/log.md`, a sub-agent spawned after the
-  edits to judge the diff, and the closing shape. Six graders, four of them
-  mechanical: the skill fired, a sub-agent ran, an edit precedes it, and the
-  log carries `RF-2`. No grader requires the commit itself, since `git` can be
-  unusable inside the eval sandbox; the case asks for the commit or for the
-  `deviated:` line that says why there is none. On its first runs the case held
-  the skill's substance and caught a drift in its ending: two runs put something
-  after the closing actions, one of them a claim that there were no deviations,
-  which the skill's own text says to print as nothing at all. The `closing`
-  grader fails on that rather than being written around it.
+  that already carries the gate. Five graders, four of them mechanical: the
+  skill fired, a sub-agent ran, an edit precedes that sub-agent, and
+  `.qmw/refactor/log.md` carries the `RF-2` entry. The fifth is judged from the
+  reply and asks two things the discipline cannot do without: the carrier the
+  finding did not cite was found, and the gate was green before the first edit
+  and again after the work. No grader requires the commit itself, since `git`
+  can be unusable inside the eval sandbox.
+
+  The shape of the judged half is what six runs taught. A rubric of six
+  conditions and five failure clauses fails replies that satisfy every one of
+  them: three judges share one prompt, so a single misreading becomes a
+  unanimous verdict, and the run is scored against nothing real. What a judge
+  holds reliably here is a couple of unmistakable facts; everything structural
+  belongs in a mechanical grader, where the verdict carries its own evidence
+  (`Edit@15 precedes Agent@22`). The closing shape of a reply was graded and
+  then dropped for that reason, not because the skill failed it.
 - The documented eval command passes `--allow-tools Bash Write Edit`, which the
   repair cases need and the audit cases are indifferent to.
 

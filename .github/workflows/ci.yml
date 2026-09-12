@@ -20,7 +20,7 @@ jobs:
             node: 24
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node }}
       - run: node test/run.mjs
@@ -32,7 +32,7 @@ jobs:
         with:
           # The commit-surface ratchet judges the range this run introduces.
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
       # This repository is both the plugin and the marketplace that indexes it.

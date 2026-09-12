@@ -7,6 +7,27 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Added
+
+- `evals/refactor-proves-nothing-moved`: the first case on the repair half of
+  the line. A fixture with three copies of `formatDate`, two cited by the
+  finding and one not, two of them pinned by tests and one not, and a `.qmw/`
+  that already carries the gate. The graders hold what the skill's text
+  promises: the third carrier found, the class closed to one source, the gate
+  green before the first edit and after the last, the untested carrier pinned,
+  the `RF-2` entry in `.qmw/refactor/log.md`, a sub-agent spawned after the
+  edits to judge the diff, and the closing shape. Six graders, four of them
+  mechanical: the skill fired, a sub-agent ran, an edit precedes it, and the
+  log carries `RF-2`. No grader requires the commit itself, since `git` can be
+  unusable inside the eval sandbox; the case asks for the commit or for the
+  `deviated:` line that says why there is none. On its first runs the case held
+  the skill's substance and caught a drift in its ending: two runs put something
+  after the closing actions, one of them a claim that there were no deviations,
+  which the skill's own text says to print as nothing at all. The `closing`
+  grader fails on that rather than being written around it.
+- The eval workflow and the documented command pass `--allow-tools Bash Write
+  Edit`, which the repair cases need and the audit cases are indifferent to.
+
 ## [0.8.0] - 2026-09-12
 
 ### Fixed

@@ -25,8 +25,18 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   after the closing actions, one of them a claim that there were no deviations,
   which the skill's own text says to print as nothing at all. The `closing`
   grader fails on that rather than being written around it.
-- The eval workflow and the documented command pass `--allow-tools Bash Write
-  Edit`, which the repair cases need and the audit cases are indifferent to.
+- The documented eval command passes `--allow-tools Bash Write Edit`, which the
+  repair cases need and the audit cases are indifferent to.
+
+### Removed
+
+- `.github/workflows/evals.yml`. It read `ANTHROPIC_API_KEY` from repository
+  secrets, the repository has none, and a dispatch nobody can dispatch is a
+  claim the repository does not back. The evals run on the maintainer's
+  machine, and `evals/README.md` now says so, with the local obstacle that
+  costs an afternoon the first time: a case granting `Bash` refuses to start
+  while a credential store holds a symbolic link inside it, which on macOS
+  with Docker Desktop is always.
 
 ## [0.8.0] - 2026-09-12
 

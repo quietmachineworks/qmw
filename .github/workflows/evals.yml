@@ -27,7 +27,7 @@ jobs:
           claude plugin eval . --trust-plugin --scaffold --no-publish \
             --json results.json --threshold "${{ inputs.threshold }}" \
             --judge-model sonnet --max-cost-usd 5
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: eval-results

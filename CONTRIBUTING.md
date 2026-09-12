@@ -44,7 +44,8 @@ refuses a drifted copy.
 The behavioral evals under `evals/` run with `claude plugin eval . --scaffold
 --allow-tools Bash Write Edit`
 and call the model on your credentials. Run them when a skill's text or
-description changes; they are not part of the default CI.
+description changes; no workflow runs them, and `evals/README.md` carries what
+a local run needs.
 
 ## Adding or changing a skill
 

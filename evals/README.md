@@ -37,12 +37,36 @@ list them in `allowed_tools` and cannot pass without it. The audit cases do
 not need it, and their `max: 0` graders hold either way.
 
 The default judge is a small model and it marks correct replies wrong when
-they are shaped differently from the rubric; `--judge-model sonnet` is what
-the dispatch workflow uses. Rubrics here are written as numbered conditions
-for that reason.
+they are shaped differently from the rubric, so every run here passes
+`--judge-model sonnet`. Rubrics are written as numbered conditions for the same
+reason.
 
 `--scaffold` runs each case's `fixture.sh` before Claude starts; without it the
-workspace is empty and every case degrades to "no rules stated". The runs are
-billed and not part of the default CI; `.github/workflows/evals.yml` runs them
-on dispatch with a cost ceiling. Results land under `evals/results/`, which is
-ignored.
+workspace is empty and every case degrades to "no rules stated". Results land
+under `evals/results/`, which is ignored.
+
+## Where these run
+
+On the maintainer's machine, by hand, when a skill's text or description
+changes. There is no workflow: the runs are billed to whoever launches them,
+and a repository secret holding an account's credentials buys little for a
+suite one person runs a few times a release. `--max-cost-usd` is the seatbelt,
+and a full pass costs a few dollars.
+
+One local obstacle is worth knowing before it eats an afternoon. A case that
+grants `Bash` refuses to start when a credential store on the machine holds a
+symbolic link inside it, because the sandbox cannot then exclude the store
+reliably. On macOS with Docker Desktop that is always true: `~/.docker`
+carries a link per CLI plugin. The remedy the runner names is to keep the
+store's contents in one plain directory, so move the linked directories out of
+it for the run and put them back afterwards:
+
+```bash
+mkdir -p ~/.docker-eval-backup && mv ~/.docker/cli-plugins ~/.docker/bin ~/.docker-eval-backup/
+# run the suite
+mv ~/.docker-eval-backup/* ~/.docker/ && rmdir ~/.docker-eval-backup
+```
+
+Restore it on every exit path, including a failed run: a `trap` around the
+command costs one line and saves a puzzled hour the next time `docker compose`
+is not found.

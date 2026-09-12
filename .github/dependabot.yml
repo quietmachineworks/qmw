@@ -1,0 +1,11 @@
+# The repository has no runtime dependencies. What can go stale is the set of
+# actions the workflows pin by major tag, and this is the only thing that will
+# say so.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: "Raise"

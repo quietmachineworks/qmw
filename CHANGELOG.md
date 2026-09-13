@@ -7,6 +7,8 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+## [0.8.1] - 2026-09-13
+
 ### Added
 
 - `evals/refactor-proves-nothing-moved`: the first case on the repair half of
@@ -420,7 +422,8 @@ First release.
 - References covering detector authoring, the invariants, and CI wiring.
 - Two example definitions, kept as illustrations of the format.
 
-[Unreleased]: https://github.com/quietmachineworks/qmw/compare/v0.8.0...HEAD
+[Unreleased]: https://github.com/quietmachineworks/qmw/compare/v0.8.1...HEAD
+[0.8.1]: https://github.com/quietmachineworks/qmw/compare/v0.8.0...v0.8.1
 [0.8.0]: https://github.com/quietmachineworks/qmw/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/quietmachineworks/qmw/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/quietmachineworks/qmw/compare/v0.5.0...v0.6.0

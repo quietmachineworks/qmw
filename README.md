@@ -226,6 +226,12 @@ The finding nobody looks for is shadowing: two descriptions claiming the same
 trigger do not split the work, one wins and the other never fires, whatever its
 quality. That is why a good skill looks dormant.
 
+The sibling is [agentlint](https://github.com/quietmachineworks/agentlint), a
+binary with no model in it: a hook whose command is gone, a misspelt settings
+key, a skill named unlike its folder, in a second and without a token.
+audit-agent reads it when it is installed and loses nothing when it is not.
+agentlint states what is broken; audit-agent states what is not worth carrying.
+
 ```
 /qmw:audit-agent find <subject>
 ```
@@ -493,6 +499,13 @@ Le constat que personne ne cherche, c'est l'éclipse : deux descriptions qui
 revendiquent le même déclencheur ne se partagent pas le travail, l'une gagne et
 l'autre ne part jamais, quelle que soit sa qualité. C'est pour ça qu'une bonne
 skill a l'air dormante.
+
+Le jumeau, c'est [agentlint](https://github.com/quietmachineworks/agentlint), un
+binaire sans modèle dedans : un hook dont la commande a disparu, une clé de
+settings mal orthographiée, une skill nommée autrement que son dossier, en une
+seconde et sans un token. audit-agent le lit quand il est installé et ne perd
+rien quand il ne l'est pas. agentlint dit ce qui est cassé ; audit-agent dit ce
+qui ne vaut pas la peine d'être embarqué.
 
 `/qmw:audit-agent find <sujet>` cherche ce qui couvre déjà le besoin, déjà installé d'abord,
 puis ce que l'écosystème propose - comparés sur l'adéquation, le coût réel (un

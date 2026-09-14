@@ -26,6 +26,8 @@ qmw's other reading skill, `status`, audits the work qmw produced; this one audi
 
 Layouts differ by version, by OS and by install method, and a skill that remembers paths goes stale faster than the thing it audits. **Discover the inventory, never assume it.** Look where this build actually keeps things, and say in the report what was read.
 
+**When `agentlint` is on PATH, run `agentlint --json` before reading anything by hand.** It resolves settings, hooks, subagents and skills against this machine, deterministically and without a token: a hook whose command does not exist here, a settings key one letter off, a hook event that will never fire, a skill whose name disagrees with its folder. Its `read` list and `counts` seed the inventory, and each of its findings enters the report as a hazard that was **measured** rather than judged. When it is absent, do all of this by hand as below and say nothing about it: the binary is a shortcut, never a dependency, and a run without it produces the same kinds of finding it always did. The line between the two is fixed: [agentlint](https://github.com/quietmachineworks/agentlint) states what is broken, this skill states what is not worth carrying.
+
 The kinds worth counting, wherever they live: **skills** (user-level, project-level, and the ones plugins bring), **slash commands**, **subagent definitions**, **hooks** (user settings, local settings, project settings, and the ones plugins install), **MCP servers**, and **plugins and their marketplaces**. Project-level items belong to the repository, not to the user; they are inventoried and priced, never struck by this skill.
 
 **Skills are often not installed by the agent at all.** A skill manager may own them, and then the agent's own folder holds only symlinks: the `skills` CLI keeps a lockfile at `~/.agents/.skill-lock.json`, plus a project-scoped equivalent, and links one source tree into every agent directory it was told to target. Find that lockfile before judging anything, because it carries what the folder cannot show - each item's upstream source, its path inside that repository, and a content hash. It also explains an inventory that makes no sense otherwise: one install told to target every agent creates a directory for every agent, including the dozens of tools this machine has never had, each holding a single link.
@@ -54,7 +56,7 @@ The transcripts are the truth, not the prompt history. A skill fires two ways: t
 
 Four, defined by cost, not by feeling.
 
-**hazard** - misfires or costs correctness. A hook whose command does not resolve on this machine, an absolute path from a previous laptop, a plugin from a marketplace that no longer answers, a skill whose description promises what its body does not do, a secret in plain text, a check that has been failing open for months. Hazards are first in the report and first out the door, regardless of usage.
+**hazard** - misfires or costs correctness. A hook whose command does not resolve on this machine, an absolute path from a previous laptop, a plugin from a marketplace that no longer answers, a skill whose description promises what its body does not do, a secret in plain text, a check that has been failing open for months. Hazards are first in the report and first out the door, regardless of usage. Where agentlint ran, the hazards it named come back measured, and the finding says so on its `where` line; the rest are judged from the files.
 
 **overhead** - always-on cost, nothing returned. A hook on a hot matcher that the transcripts never show doing anything, an MCP server whose tools were never called, four hundred characters of description that has never once been selected. Overhead is the expensive class: it is paid continuously.
 
@@ -87,6 +89,8 @@ Compare candidates on four axes, always the same four:
 
 Three verdicts, and the third is offered every time: **use what you already have**, **install this one** (with the exact command, for the user to run), or **write the three lines yourself**. Most requests that begin "find me a skill for X" end correctly at a short prompt or a project-level command, not at an install. A finder that never says so is a shop, not an advisor.
 
+A deterministic need gets a deterministic answer. When the subject is something a linter or a one-line script settles - does this path exist, is this key spelt right - the recommendation is that tool, or those lines, before any skill; agentlint is the one this plugin already reaches for on the agent's own config.
+
 **Install nothing.** find reports and recommends; the user runs the command.
 
 ## clean
@@ -109,7 +113,7 @@ Close with what changed, in one line per item, and how to undo each. Then stop: 
 
 In the language of the conversation, read in a terminal. No tables: flat blocks, one finding each.
 
-Open with the inventory in five lines: what is installed by kind and count, the total standing cost with its estimate caveat and what share of a prompt it takes, the hooks sitting on hot matchers, the one sentence a reader wants, and anything found that outranks the audit - a secret in a config, a hook running a path that does not exist, a plugin from a dead marketplace.
+Open with the inventory in five lines: what is installed by kind and count, the total standing cost with its estimate caveat and what share of a prompt it takes, the hooks sitting on hot matchers, the one sentence a reader wants, and anything found that outranks the audit - a secret in a config, a hook running a path that does not exist, a plugin from a dead marketplace - each marked `measured` when agentlint established it, so the reader knows which ones need no second look.
 
 A finding is five lines:
 

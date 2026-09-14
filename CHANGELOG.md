@@ -7,6 +7,18 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 
+### Changed
+
+- `audit-agent` reads `agentlint --json` when the binary is on PATH, and the
+  hazards it establishes come back marked measured rather than judged: a hook
+  whose command does not resolve, a settings key one letter off, a skill named
+  unlike its folder. Without the binary the skill does exactly what it did, and
+  says nothing about it. agentlint states what is broken; audit-agent states
+  what is not worth carrying. `find` now reaches for a deterministic tool
+  before a skill when the need is deterministic.
+- README and `audit-agent` name agentlint as the sibling, so the pairing reads
+  from both sides. It is not a dependency and does not read like one.
+
 ## [0.8.1] - 2026-09-13
 
 ### Added

@@ -1,6 +1,6 @@
 {
   "name": "@quietmachineworks/qmw",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "Small, opinionated tools for solo developers shipping real projects.",
   "type": "module",
   "license": "MIT",
